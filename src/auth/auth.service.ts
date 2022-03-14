@@ -5,12 +5,20 @@ import { UserI } from 'src/interfaces/user.interface';
 import { UserDto, UserLoginDto } from './dto/user.dto';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import { TokenPayloadI } from 'src/interfaces/auth.interface';
+import {
+    SurfcampTokenPayloadI,
+    UserTokenPayloadI,
+} from 'src/interfaces/auth.interface';
 import { User } from 'src/models/user.schema';
+import { SurfcampDto, SurfcampLoginDto } from './dto/surfcamp.dto';
+import { Surfcamp } from 'src/models/surfcamp.schema';
 
 @Injectable()
 export class AuthService {
-    constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
+    constructor(
+        @InjectModel('User') private readonly userModel: Model<User>,
+        @InjectModel('Surfcamp') private readonly surfcampModel: Model<Surfcamp>
+    ) {}
 
     async registerUser(userDto: UserDto): Promise<UserI> {
         const encryptedPasswordUser = {
@@ -49,7 +57,54 @@ export class AuthService {
         }
     }
 
-    async loginTokenUser(token: string): Promise<TokenPayloadI> {
+    async loginTokenUser(token: string): Promise<UserTokenPayloadI> {
+        const tokenExtracted = token.split(' ')[1];
+        const tokenContents = jwt.verify(tokenExtracted, process.env.SECRET);
+        if (!tokenContents) {
+            throw new UnauthorizedException();
+        }
+
+        return tokenContents;
+    }
+
+    async registerSurfcamp(surfcampDto: SurfcampDto): Promise<Surfcamp> {
+        const encryptedPasswordSurfcamp = {
+            ...surfcampDto,
+            password: bcrypt.hashSync(surfcampDto.password),
+        };
+        return await this.surfcampModel.create(encryptedPasswordSurfcamp);
+    }
+
+    async loginSurfcamp(surfcampLoginDto: SurfcampLoginDto): Promise<any> {
+        const possibleUserDb = await this.surfcampModel.findOne({
+            username: surfcampLoginDto.username,
+        });
+        if (possibleUserDb) {
+            const passwordCheck = bcrypt.compareSync(
+                surfcampLoginDto.password,
+                possibleUserDb.password
+            );
+
+            if (passwordCheck) {
+                const payload = {
+                    id: possibleUserDb.id,
+                    name: possibleUserDb.name,
+                    username: possibleUserDb.username,
+                    role: possibleUserDb.role,
+                };
+                const token = jwt.sign(payload, process.env.SECRET);
+                return { token };
+            } else {
+                throw new UnauthorizedException(
+                    'Username or password incorrect'
+                );
+            }
+        } else {
+            throw new UnauthorizedException('Username or password incorrect');
+        }
+    }
+
+    async loginTokenSurfcamp(token: string): Promise<SurfcampTokenPayloadI> {
         const tokenExtracted = token.split(' ')[1];
         const tokenContents = jwt.verify(tokenExtracted, process.env.SECRET);
         if (!tokenContents) {

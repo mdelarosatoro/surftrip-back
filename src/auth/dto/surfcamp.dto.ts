@@ -1,12 +1,14 @@
-export class UserDto {
+export class SurfcampDto {
     readonly email: string;
     readonly username: string;
     readonly password: string;
     readonly name: string;
     readonly lastName: string;
+    readonly location: string;
+    readonly skillLevels: [string];
 }
 
-export class UserLoginDto {
+export class SurfcampLoginDto {
     readonly username: string;
     readonly password: string;
 }
