@@ -1,12 +1,21 @@
 import { NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
+import * as expressjwt from 'express-jwt';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const port = process.env.PORT;
     app.enableCors();
     app.use(helmet());
+    // app.use(
+    //     expressjwt({
+    //         secret: process.env.SECRET,
+    //         algorithms: ['HS256'],
+    //     }).unless({
+    //         path: ['/users/login', '/users/register', '/users/login-token'],
+    //     })
+    // );
     await app.listen(port, () => {
         console.log(`Server started successfully in port ${port}`);
     });
