@@ -42,6 +42,7 @@ describe('AuthController', () => {
         it('It should call service.registerUser', () => {
             controller.registerUser({
                 username: 'test',
+                email: 'test@test.com',
                 password: 'test',
                 name: 'test',
                 lastName: 'test',
