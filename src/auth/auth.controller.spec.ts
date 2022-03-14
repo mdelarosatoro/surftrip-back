@@ -18,6 +18,9 @@ describe('AuthController', () => {
                         registerUser: jest.fn(),
                         loginUser: jest.fn(),
                         loginTokenUser: jest.fn(),
+                        registerSurfcamp: jest.fn(),
+                        loginSurfcamp: jest.fn(),
+                        loginTokenSurfcamp: jest.fn(),
                     },
                 },
             ],
@@ -56,6 +59,36 @@ describe('AuthController', () => {
             const token = 'baba';
             controller.loginTokenUser(token);
             expect(service.loginTokenUser).toHaveBeenCalled();
+        });
+    });
+
+    describe('When controller.loginSurfcamp is called', () => {
+        it('It should call service.loginSurfcamp', () => {
+            controller.loginSurfcamp({ username: 'test', password: 'test' });
+            expect(service.loginSurfcamp).toHaveBeenCalled();
+        });
+    });
+
+    describe('When controller.registerSurfcamp is called', () => {
+        it('It should call service.registerSurfcamp', () => {
+            controller.registerSurfcamp({
+                email: 'test@example.com',
+                username: 'test',
+                password: 'test',
+                name: 'test',
+                lastName: 'test',
+                location: 'test',
+                skillLevels: ['Beginner'],
+            });
+            expect(service.registerSurfcamp).toHaveBeenCalled();
+        });
+    });
+
+    describe('When controller.loginTokenSurfcamp is called', () => {
+        it('It should call service.loginTokenSurfcamp', () => {
+            const token = 'baba';
+            controller.loginTokenSurfcamp(token);
+            expect(service.loginTokenSurfcamp).toHaveBeenCalled();
         });
     });
 });
