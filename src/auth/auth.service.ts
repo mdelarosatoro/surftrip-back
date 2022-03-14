@@ -9,10 +9,10 @@ import {
     SurfcampTokenPayloadI,
     UserTokenPayloadI,
 } from 'src/interfaces/auth.interface';
-import { User } from 'src/models/user.schema';
+
 import { SurfcampDto, SurfcampLoginDto } from './dto/surfcamp.dto';
 import { Surfcamp } from 'src/models/surfcamp.schema';
-
+import { User } from 'src/users/entities/user.entity';
 @Injectable()
 export class AuthService {
     constructor(
