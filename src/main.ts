@@ -8,14 +8,21 @@ async function bootstrap() {
     const port = process.env.PORT;
     app.enableCors();
     app.use(helmet());
-    // app.use(
-    //     expressjwt({
-    //         secret: process.env.SECRET,
-    //         algorithms: ['HS256'],
-    //     }).unless({
-    //         path: ['/users/login', '/users/register', '/users/login-token'],
-    //     })
-    // );
+    app.use(
+        expressjwt({
+            secret: process.env.SECRET,
+            algorithms: ['HS256'],
+        }).unless({
+            path: [
+                '/auth/users/login',
+                '/auth/users/register',
+                '/auth/users/login-token',
+                '/auth/surfcamps/login',
+                '/auth/surfcamps/register',
+                '/auth/surfcamps/login-token',
+            ],
+        })
+    );
     await app.listen(port, () => {
         console.log(`Server started successfully in port ${port}`);
     });

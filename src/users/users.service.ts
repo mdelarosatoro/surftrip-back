@@ -8,19 +8,21 @@ import { User } from './entities/user.entity';
 export class UsersService {
     constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
-    findAll() {
-        return `This action returns all users`;
+    // findAll() {
+    //     return `This action returns all users`;
+    // }
+
+    async findOne(id: string): Promise<User> {
+        return await this.userModel.findById(id);
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} user`;
+    async update(id: string, updateUserDto: UpdateUserDto) {
+        return await this.userModel.findByIdAndUpdate(id, updateUserDto, {
+            new: true,
+        });
     }
 
-    update(id: number, updateUserDto: UpdateUserDto) {
-        return `This action updates a #${id} user`;
-    }
-
-    remove(id: number) {
-        return `This action removes a #${id} user`;
+    async remove(id: string) {
+        return await this.userModel.findByIdAndDelete(id);
     }
 }
