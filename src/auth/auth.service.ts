@@ -6,14 +6,13 @@ import { UserDto, UserLoginDto } from './dto/user.dto';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { TokenPayloadI } from 'src/interfaces/auth.interface';
+import { User } from 'src/models/user.schema';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        @InjectModel('User') private readonly userModel: Model<UserI>
-    ) {}
+    constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
-    async register(userDto: UserDto): Promise<UserI> {
+    async registerUser(userDto: UserDto): Promise<UserI> {
         const encryptedPasswordUser = {
             ...userDto,
             password: bcrypt.hashSync(userDto.password),
@@ -21,15 +20,10 @@ export class AuthService {
         return await this.userModel.create(encryptedPasswordUser);
     }
 
-    async findUserByUserName(possibleUser: UserLoginDto): Promise<any> {
-        return await this.userModel.findOne({
-            username: possibleUser.username,
+    async loginUser(userLoginDto: UserLoginDto): Promise<any> {
+        const possibleUserDb = await this.userModel.findOne({
+            username: userLoginDto.username,
         });
-    }
-
-    async login(userLoginDto: UserLoginDto): Promise<any> {
-        const possibleUserDb = await this.findUserByUserName(userLoginDto);
-
         if (possibleUserDb) {
             const passwordCheck = bcrypt.compareSync(
                 userLoginDto.password,
@@ -55,7 +49,7 @@ export class AuthService {
         }
     }
 
-    async loginToken(token: string): Promise<TokenPayloadI> {
+    async loginTokenUser(token: string): Promise<TokenPayloadI> {
         const tokenExtracted = token.split(' ')[1];
         const tokenContents = jwt.verify(tokenExtracted, process.env.SECRET);
         if (!tokenContents) {
