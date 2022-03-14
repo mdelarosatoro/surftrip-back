@@ -9,24 +9,24 @@ jobs:
 
         steps:
             - name: Git checkout
-              uses: actions/checkout@v2
+            uses: actions/checkout@v2
 
             - name: Check if .editorconfig exists
-              uses: andstor/file-existence-action@v1
-              with:
-                  files: '.editorconfig'
-                  allow_failure: true
+            uses: andstor/file-existence-action@v1
+            with:
+                files: '.editorconfig'
+                allow_failure: true
 
             - name: EditorConfig validation
-              uses: snow-actions/eclint@v1.0.1
+            uses: snow-actions/eclint@v1.0.1
 
             - name: Ensure node_modules is ignored by Git
-              uses: dkershner6/gitignore-parser@v1
-              with:
-                  must_deny: 'node_modules'
+            uses: dkershner6/gitignore-parser@v1
+            with:
+                must_deny: 'node_modules'
 
             - name: Install modules
-              run: npm ci
+            run: npm ci
 
             - name: ESLint validation
-              run: npx eslint --ignore-path .gitignore .
+            run: npx eslint --ignore-path .gitignore .

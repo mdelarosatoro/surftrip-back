@@ -9,10 +9,10 @@ jobs:
 
         steps:
             - name: Git checkout
-              uses: actions/checkout@v2
+            uses: actions/checkout@v2
 
             - name: Install modules
-              run: npm ci
+            run: npm ci
 
             - name: Testing
-              run: npm run test
+            run: npm run test
