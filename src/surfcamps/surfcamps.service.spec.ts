@@ -49,28 +49,6 @@ describe('SurfcampsService', () => {
         username: 'test1',
         email: 'test1@test.com',
     };
-    const testSurfcampWithNoPhoto = {
-        _id: '623077c5f581ffc700c6fa1e',
-        rating: [],
-        customers: [],
-        packages: [
-            {
-                _id: '623081fc746cfc728c43d774',
-                icon: 'url',
-                description: 'blalbabla',
-                days: 25,
-                price: 700,
-                name: '10 days all included',
-            },
-        ],
-        role: 'surfcamp',
-        photos: [],
-        skillLevels: ['Beginner'],
-        location: 'test',
-        name: 'test1',
-        username: 'test1',
-        email: 'test1@test.com',
-    };
 
     beforeEach(async () => {
         const mockUserRepository = {
