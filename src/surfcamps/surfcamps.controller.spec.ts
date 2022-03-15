@@ -15,6 +15,7 @@ describe('SurfcampsController', () => {
                     useValue: {
                         findAll: jest.fn(),
                         findOne: jest.fn(),
+                        search: jest.fn(),
                         update: jest.fn(),
                         remove: jest.fn(),
                         findSurfcampPackages: jest.fn(),
@@ -37,6 +38,12 @@ describe('SurfcampsController', () => {
         it('It should call service.findAll', () => {
             controller.findAll();
             expect(service.findAll).toHaveBeenCalled();
+        });
+    });
+    describe('When controller.searchSurfcamps is called', () => {
+        it('It should call service.search', () => {
+            controller.searchSurfcamps();
+            expect(service.search).toHaveBeenCalled();
         });
     });
     describe('When controller.findOne is called', () => {

@@ -17,7 +17,9 @@ export class SurfcampsService {
     }
 
     async search(query) {
-        const surfcampsDb = await this.surfcampModel.find({});
+        const surfcampsDb = await this.surfcampModel
+            .find({})
+            .populate('packages', { surfcamp: 0 });
         const filteredSurfcamps = surfcampsDb.filter(
             (item) =>
                 item.location.includes(query.location) &&

@@ -7,7 +7,6 @@ describe('SurfcampsService', () => {
     let service: SurfcampsService;
     const testSurfcamp = {
         _id: '623077c5f581ffc700c6fa1e',
-        rating: [],
         customers: [],
         packages: [
             {
@@ -26,10 +25,10 @@ describe('SurfcampsService', () => {
         name: 'test1',
         username: 'test1',
         email: 'test1@test.com',
+        rating: 0,
     };
     const testSurfcampWithPhoto = {
         _id: '623077c5f581ffc700c6fa1e',
-        rating: [],
         customers: [],
         packages: [
             {
@@ -48,6 +47,7 @@ describe('SurfcampsService', () => {
         name: 'test1',
         username: 'test1',
         email: 'test1@test.com',
+        rating: 0,
     };
 
     beforeEach(async () => {
@@ -85,6 +85,14 @@ describe('SurfcampsService', () => {
 
     test('When calling findAll it returns the testSurfcamp in an array', async () => {
         const result = await service.findAll();
+        expect(result).toEqual([testSurfcamp]);
+    });
+    test('When calling search it returns the testSurfcamp in an array', async () => {
+        const query = {
+            location: 'test',
+            rating: 0,
+        };
+        const result = await service.search(query);
         expect(result).toEqual([testSurfcamp]);
     });
     test('When calling findOne it returns the testSurfcamp', async () => {

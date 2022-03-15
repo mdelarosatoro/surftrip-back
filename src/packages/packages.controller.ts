@@ -31,7 +31,7 @@ export class PackagesController {
     }
 
     @Get('search')
-    searchSurfcamps(
+    searchPackages(
         @Query('price') price?: string,
         @Query('days') days?: string
     ) {

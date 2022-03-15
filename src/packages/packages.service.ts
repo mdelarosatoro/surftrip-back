@@ -43,7 +43,14 @@ export class PackagesService {
     }
 
     async search(query) {
-        const packagesDb = await this.packageModel.find({});
+        const packagesDb = await this.packageModel
+            .find({})
+            .populate('surfcamp', {
+                packages: 0,
+                username: 0,
+                customers: 0,
+                role: 0,
+            });
         const filteredPackages = packagesDb.filter(
             (item) =>
                 item.price <= Number(query.price) &&

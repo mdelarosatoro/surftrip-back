@@ -31,6 +31,24 @@ describe('PackagesService', () => {
         },
     };
 
+    const testPackageResult = {
+        _id: '623081fc746cfc728c43d774',
+        name: '10 days all included',
+        description: 'blalbabla',
+        icon: 'url',
+        days: 25,
+        price: 700,
+        surfcamp: {
+            _id: '623077c5f581ffc700c6fa1e',
+            rating: [],
+            photos: ['http://testphoto.coms'],
+            skillLevels: ['Beginner'],
+            location: 'test',
+            name: 'test1',
+            email: 'test1@test.com',
+        },
+    };
+
     const testSurfcamp = {
         _id: '623077c5f581ffc700c6fa1e',
         name: 'test1',
@@ -124,6 +142,15 @@ describe('PackagesService', () => {
     test('When calling findAll it returns the testPackage', async () => {
         const result = await service.findAll();
         expect(result).toEqual([testPackage]);
+    });
+    test('When calling search it returns the testPackage', async () => {
+        const query = {
+            price: 800,
+            days: 25,
+        };
+        const result = await service.search(query);
+
+        expect(result).toEqual([testPackageResult]);
     });
     test('When calling findOne it returns the testPackage', async () => {
         const result = await service.findOne('testid');
