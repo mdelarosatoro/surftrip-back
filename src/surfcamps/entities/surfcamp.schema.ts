@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { Document } from 'mongoose';
-import { User } from './user.schema';
+import { User } from 'src/users/entities/user.entity';
 
 export type SurfcampDocument = Surfcamp & Document;
 
@@ -58,3 +58,10 @@ export class Surfcamp {
 }
 
 export const SurfcampSchema = SchemaFactory.createForClass(Surfcamp);
+
+SurfcampSchema.set('toJSON', {
+    transform: (document, returnedObject) => {
+        delete returnedObject.__v;
+        delete returnedObject.password;
+    },
+});
