@@ -57,8 +57,8 @@ export class Surfcamp {
     @Prop({ ref: 'User' })
     customers: mongoose.Types.ObjectId[];
 
-    @Prop()
-    rating: number[];
+    @Prop({ default: 0 })
+    rating: number;
 }
 
 export const SurfcampSchema = SchemaFactory.createForClass(Surfcamp);
