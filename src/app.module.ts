@@ -11,9 +11,9 @@ import LogsMiddleware from './helpers/logs-middleware';
 @Module({
     imports: [
         ConfigModule.forRoot(),
-        MongooseModule.forRoot(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@test-cluster.iqlbh.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority
-
-`),
+        MongooseModule.forRoot(
+            `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@test-cluster.iqlbh.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
+        ),
         AuthModule,
         UsersModule,
         SurfcampsModule,
