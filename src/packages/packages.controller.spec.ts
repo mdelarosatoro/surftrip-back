@@ -27,6 +27,7 @@ describe('PackagesController', () => {
                         findOne: jest.fn(),
                         update: jest.fn(),
                         remove: jest.fn(),
+                        book: jest.fn(),
                     },
                 },
             ],
@@ -73,6 +74,12 @@ describe('PackagesController', () => {
         it('It should call service.remove', () => {
             controller.remove('testid');
             expect(service.remove).toHaveBeenCalled();
+        });
+    });
+    describe('When controller.book is called', () => {
+        it('It should call service.book', () => {
+            controller.book('testid', 'testToken');
+            expect(service.book).toHaveBeenCalled();
         });
     });
 });

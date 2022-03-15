@@ -6,12 +6,15 @@ import { Model } from 'mongoose';
 import { Package } from './entities/package.entity';
 import { Surfcamp } from '../surfcamps/entities/surfcamp.schema';
 import { extractToken } from '../helpers/extract-token';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class PackagesService {
     constructor(
         @InjectModel('Package') private readonly packageModel: Model<Package>,
-        @InjectModel('Surfcamp') private readonly surfcampModel: Model<Surfcamp>
+        @InjectModel('Surfcamp')
+        private readonly surfcampModel: Model<Surfcamp>,
+        @InjectModel('User') private readonly userModel: Model<User>
     ) {}
 
     async create(
@@ -76,5 +79,26 @@ export class PackagesService {
 
     remove(id: string) {
         return this.packageModel.findByIdAndDelete(id);
+    }
+
+    async book(id: string, token: string) {
+        const tokenContents = extractToken(token);
+        const userDb = await this.userModel.findById(tokenContents.id);
+        const packageDb = await this.packageModel.findById(id);
+        const surfcampDb = await this.surfcampModel.findById(
+            packageDb.surfcamp
+        );
+
+        userDb.bookings.push(packageDb._id);
+        await userDb.save();
+        const newBookObject = {
+            user: tokenContents.id,
+            package: id,
+        };
+        surfcampDb.customers.push(newBookObject);
+        await surfcampDb.save();
+        return {
+            message: `User ${userDb._id} successfully booked package ${packageDb._id}`,
+        };
     }
 }
