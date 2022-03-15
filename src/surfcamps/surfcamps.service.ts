@@ -11,11 +11,15 @@ export class SurfcampsService {
     ) {}
 
     findAll() {
-        return this.surfcampModel.find({});
+        return this.surfcampModel
+            .find({})
+            .populate('packages', { surfcampId: 0 });
     }
 
     findOne(id: string) {
-        return this.surfcampModel.findById(id);
+        return this.surfcampModel
+            .findById(id)
+            .populate('packages', { surfcampId: 0 });
     }
 
     update(id: string, updateSurfcampDto: UpdateSurfcampDto) {

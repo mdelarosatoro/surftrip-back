@@ -6,6 +6,7 @@ import {
     Patch,
     Param,
     Delete,
+    Headers,
 } from '@nestjs/common';
 import { PackagesService } from './packages.service';
 import { CreatePackageDto } from './dto/create-package.dto';
@@ -16,8 +17,11 @@ export class PackagesController {
     constructor(private readonly packagesService: PackagesService) {}
 
     @Post()
-    create(@Body() createPackageDto: CreatePackageDto) {
-        return this.packagesService.create(createPackageDto);
+    create(
+        @Body() createPackageDto: CreatePackageDto,
+        @Headers('Authorization') token: string
+    ) {
+        return this.packagesService.create(createPackageDto, token);
     }
 
     @Get()
@@ -26,8 +30,8 @@ export class PackagesController {
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.packagesService.findOne(+id);
+    async findOne(@Param('id') id: string) {
+        return await this.packagesService.findOne(id);
     }
 
     @Patch(':id')

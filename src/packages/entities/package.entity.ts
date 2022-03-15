@@ -34,7 +34,7 @@ export class Package {
     @Prop({
         ref: 'Surfcamp',
     })
-    surfcampId: mongoose.Types.ObjectId;
+    surfcamp: mongoose.Types.ObjectId;
 }
 
 export const PackageSchema = SchemaFactory.createForClass(Package);
