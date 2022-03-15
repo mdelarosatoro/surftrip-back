@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateSurfcampDto } from './create-surfcamp.dto';
+import { Surfcamp } from '../entities/surfcamp.schema';
 
-export class UpdateSurfcampDto extends PartialType(CreateSurfcampDto) {}
+export class UpdateSurfcampDto extends PartialType(Surfcamp) {}
