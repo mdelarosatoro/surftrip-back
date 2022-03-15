@@ -4,8 +4,8 @@ import { CreatePackageDto } from './dto/create-package.dto';
 import { UpdatePackageDto } from './dto/update-package.dto';
 import { Model } from 'mongoose';
 import { Package } from './entities/package.entity';
-import { Surfcamp } from 'src/surfcamps/entities/surfcamp.schema';
-import { extractToken } from 'src/helpers/extract-token';
+import { Surfcamp } from '../surfcamps/entities/surfcamp.schema';
+import { extractToken } from '../helpers/extract-token';
 
 @Injectable()
 export class PackagesService {
@@ -26,7 +26,6 @@ export class PackagesService {
             ...createPackageDto,
             surfcamp: extractedToken.id,
         };
-        console.log(extractedToken.id);
         const surfcampDb = await this.surfcampModel.findById(extractedToken.id);
         const newPackageDb = await this.packageModel.create(newPackage);
         surfcampDb.packages.push(newPackageDb._id);

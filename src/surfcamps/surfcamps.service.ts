@@ -13,13 +13,13 @@ export class SurfcampsService {
     findAll() {
         return this.surfcampModel
             .find({})
-            .populate('packages', { surfcampId: 0 });
+            .populate('packages', { surfcamp: 0 });
     }
 
     findOne(id: string) {
         return this.surfcampModel
             .findById(id)
-            .populate('packages', { surfcampId: 0 });
+            .populate('packages', { surfcamp: 0 });
     }
 
     update(id: string, updateSurfcampDto: UpdateSurfcampDto) {
