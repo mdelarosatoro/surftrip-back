@@ -7,7 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { UpdateSurfcampDto } from './dto/update-surfcamp.dto';
 import { Model } from 'mongoose';
 import { Surfcamp } from './entities/surfcamp.schema';
-import { extractToken } from 'src/helpers/extract-token';
+import { extractToken } from '../helpers/extract-token';
 
 @Injectable()
 export class SurfcampsService {
@@ -87,6 +87,7 @@ export class SurfcampsService {
             throw new ForbiddenException('Only users can post comments');
         }
         const surfcampDb = await this.surfcampModel.findById(id);
+
         const payload = {
             ...newComment,
             rating: Number(newComment.rating),

@@ -21,6 +21,7 @@ describe('SurfcampsController', () => {
                         findSurfcampPackages: jest.fn(),
                         addPhoto: jest.fn(),
                         deletePhoto: jest.fn(),
+                        addComment: jest.fn(),
                     },
                 },
             ],
@@ -80,6 +81,15 @@ describe('SurfcampsController', () => {
         it('It should call service.deletePhoto', () => {
             controller.deletePhoto('fakeid', { deletePhotoUrl: 'testurl' });
             expect(service.deletePhoto).toHaveBeenCalled();
+        });
+    });
+    describe('When controller.addComment is called', () => {
+        it('It should call service.addComment', () => {
+            controller.addComment('testToken', 'testId', {
+                comment: 'testComment',
+                rating: '2',
+            });
+            expect(service.addComment).toHaveBeenCalled();
         });
     });
 });
