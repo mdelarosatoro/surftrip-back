@@ -11,7 +11,7 @@ import {
 } from 'src/interfaces/auth.interface';
 
 import { SurfcampDto, SurfcampLoginDto } from './dto/surfcamp.dto';
-import { Surfcamp } from 'src/models/surfcamp.schema';
+import { Surfcamp } from 'src/surfcamps/entities/surfcamp.schema';
 import { User } from 'src/users/entities/user.entity';
 @Injectable()
 export class AuthService {

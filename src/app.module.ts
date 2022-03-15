@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { SurfcampsModule } from './surfcamps/surfcamps.module';
 import LogsMiddleware from './helpers/logs-middleware';
 
 @Module({
@@ -14,6 +15,7 @@ import LogsMiddleware from './helpers/logs-middleware';
 `),
         AuthModule,
         UsersModule,
+        SurfcampsModule,
     ],
     controllers: [AppController],
     providers: [],

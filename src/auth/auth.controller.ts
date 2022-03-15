@@ -7,7 +7,7 @@ import {
     SurfcampTokenPayloadI,
 } from 'src/interfaces/auth.interface';
 import { SurfcampDto } from './dto/surfcamp.dto';
-import { Surfcamp } from 'src/models/surfcamp.schema';
+import { Surfcamp } from 'src/surfcamps/entities/surfcamp.schema';
 
 @Controller('auth')
 export class AuthController {

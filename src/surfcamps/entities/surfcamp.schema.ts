@@ -58,3 +58,10 @@ export class Surfcamp {
 }
 
 export const SurfcampSchema = SchemaFactory.createForClass(Surfcamp);
+
+SurfcampSchema.set('toJSON', {
+    transform: (document, returnedObject) => {
+        delete returnedObject.__v;
+        delete returnedObject.password;
+    },
+});

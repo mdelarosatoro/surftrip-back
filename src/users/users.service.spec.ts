@@ -40,4 +40,19 @@ describe('UsersService', () => {
     it('should be defined', () => {
         expect(service).toBeDefined();
     });
+
+    const id = 'f1i0jx901j23dosi2m';
+
+    test('When calling findOne it returns the test user', async () => {
+        const result = await service.findOne(id);
+        expect(result).toBe(testUser);
+    });
+    test('When calling update it returns the test user', async () => {
+        const result = await service.update(id, { name: 'testUser' });
+        expect(result).toBe(testUser);
+    });
+    test('When calling remove it returns the test user', async () => {
+        const result = await service.remove(id);
+        expect(result).toBe(testUser);
+    });
 });
