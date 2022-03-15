@@ -1,4 +1,4 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { Document } from 'mongoose';
 import { Package } from 'src/packages/entities/package.entity';
@@ -56,6 +56,29 @@ export class Surfcamp {
 
     @Prop({ ref: 'User' })
     customers: mongoose.Types.ObjectId[];
+
+    @Prop({
+        type: [
+            {
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'User',
+                    required: true,
+                },
+                comment: String,
+                rating: Number,
+            },
+        ],
+        required: true,
+        default: [],
+    })
+    comments: [
+        {
+            user: User;
+            comment: string;
+            rating: number;
+        }
+    ];
 
     @Prop({ default: 0 })
     rating: number;
