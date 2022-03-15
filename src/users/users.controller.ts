@@ -22,7 +22,7 @@ export class UsersController {
 
     @Get(':id')
     async findOne(@Param('id') id: string): Promise<User> {
-        return await this.usersService.findOne(id);
+        return this.usersService.findOne(id);
     }
 
     @Patch(':id')
@@ -30,11 +30,11 @@ export class UsersController {
         @Param('id') id: string,
         @Body() updateUserDto: UpdateUserDto
     ): Promise<User> {
-        return await this.usersService.update(id, updateUserDto);
+        return this.usersService.update(id, updateUserDto);
     }
 
     @Delete(':id')
     async remove(@Param('id') id: string): Promise<User> {
-        return await this.usersService.remove(id);
+        return this.usersService.remove(id);
     }
 }

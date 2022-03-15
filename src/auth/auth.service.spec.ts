@@ -1,7 +1,7 @@
 import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { User, UserSchema } from '../models/user.schema';
+import { User, UserSchema } from '../users/entities/user.entity';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { Surfcamp, SurfcampSchema } from '../models/surfcamp.schema';
