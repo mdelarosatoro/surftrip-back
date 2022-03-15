@@ -42,6 +42,23 @@ export class PackagesService {
         });
     }
 
+    async search(query) {
+        const packagesDb = await this.packageModel
+            .find({})
+            .populate('surfcamp', {
+                packages: 0,
+                username: 0,
+                customers: 0,
+                role: 0,
+            });
+        const filteredPackages = packagesDb.filter(
+            (item) =>
+                item.price <= Number(query.price) &&
+                item.days <= Number(query.days)
+        );
+        return filteredPackages;
+    }
+
     findOne(id: string) {
         return this.packageModel.findById(id).populate('surfcamp', {
             packages: 0,

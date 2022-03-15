@@ -20,6 +20,7 @@ export class SurfcampsModule {
             .apply(SurfcampOwnershipMiddleware)
             .exclude(
                 { path: 'surfcamps', method: RequestMethod.GET },
+                { path: 'surfcamps/search', method: RequestMethod.GET },
                 { path: 'surfcamps', method: RequestMethod.POST },
                 { path: 'surfcamps/:id', method: RequestMethod.GET },
                 { path: 'surfcamps/:id/packages', method: RequestMethod.GET }

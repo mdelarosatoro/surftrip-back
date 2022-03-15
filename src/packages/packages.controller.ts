@@ -7,6 +7,7 @@ import {
     Delete,
     Headers,
     Put,
+    Query,
 } from '@nestjs/common';
 import { PackagesService } from './packages.service';
 import { CreatePackageDto } from './dto/create-package.dto';
@@ -27,6 +28,18 @@ export class PackagesController {
     @Get()
     findAll() {
         return this.packagesService.findAll();
+    }
+
+    @Get('search')
+    searchPackages(
+        @Query('price') price?: string,
+        @Query('days') days?: string
+    ) {
+        const query = {
+            price,
+            days,
+        };
+        return this.packagesService.search(query);
     }
 
     @Get(':id')

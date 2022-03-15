@@ -16,6 +16,18 @@ export class SurfcampsService {
             .populate('packages', { surfcamp: 0 });
     }
 
+    async search(query) {
+        const surfcampsDb = await this.surfcampModel
+            .find({})
+            .populate('packages', { surfcamp: 0 });
+        const filteredSurfcamps = surfcampsDb.filter(
+            (item) =>
+                item.location.includes(query.location) &&
+                item.rating >= Number(query.rating)
+        );
+        return filteredSurfcamps;
+    }
+
     findOne(id: string) {
         return this.surfcampModel
             .findById(id)

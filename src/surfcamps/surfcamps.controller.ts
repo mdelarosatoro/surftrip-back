@@ -6,6 +6,7 @@ import {
     Patch,
     Param,
     Delete,
+    Query,
 } from '@nestjs/common';
 import { SurfcampsService } from './surfcamps.service';
 import { UpdateSurfcampDto } from './dto/update-surfcamp.dto';
@@ -17,6 +18,18 @@ export class SurfcampsController {
     @Get()
     findAll() {
         return this.surfcampsService.findAll();
+    }
+
+    @Get('search')
+    searchSurfcamps(
+        @Query('location') location?: string,
+        @Query('rating') rating?: string
+    ) {
+        const query = {
+            location,
+            rating,
+        };
+        return this.surfcampsService.search(query);
     }
 
     @Get(':id')
