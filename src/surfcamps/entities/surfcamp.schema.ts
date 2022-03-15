@@ -54,8 +54,33 @@ export class Surfcamp {
     @Prop({ ref: 'Package' })
     packages: mongoose.Types.ObjectId[];
 
-    @Prop({ ref: 'User' })
-    customers: mongoose.Types.ObjectId[];
+    // @Prop({ ref: 'User' })
+    // customers: mongoose.Types.ObjectId[];
+
+    @Prop({
+        type: [
+            {
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'User',
+                    required: true,
+                },
+                package: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Package',
+                    required: true,
+                },
+            },
+        ],
+        required: true,
+        default: [],
+    })
+    customers: [
+        {
+            user: User;
+            package: string;
+        }
+    ];
 
     @Prop({
         type: [

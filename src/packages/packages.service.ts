@@ -91,7 +91,11 @@ export class PackagesService {
 
         userDb.bookings.push(packageDb._id);
         await userDb.save();
-        surfcampDb.customers.push(userDb._id);
+        const newBookObject = {
+            user: tokenContents.id,
+            package: id,
+        };
+        surfcampDb.customers.push(newBookObject);
         await surfcampDb.save();
         return {
             message: `User ${userDb._id} successfully booked package ${packageDb._id}`,

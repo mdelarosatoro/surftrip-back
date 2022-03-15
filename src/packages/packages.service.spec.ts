@@ -7,6 +7,7 @@ import {
 import { Package, PackageSchema } from './entities/package.entity';
 import { PackagesService } from './packages.service';
 import * as jwt from 'jsonwebtoken';
+import { User, UserSchema } from '../users/entities/user.entity';
 
 jest.mock('jsonwebtoken');
 
@@ -58,6 +59,18 @@ describe('PackagesService', () => {
         location: 'test',
         email: 'test1@test.com',
         packages: [],
+        customers: [],
+    };
+
+    const testUser = {
+        _id: '123456',
+        email: 'test@example.com',
+        username: 'test',
+        password: 'test',
+        name: 'test',
+        lastName: 'test',
+        role: 'user',
+        bookings: [],
     };
 
     jwt.verify.mockReturnValue({
@@ -75,6 +88,7 @@ describe('PackagesService', () => {
 
         const mockPackageRepository = {
             findById: jest.fn().mockReturnValue({
+                ...testPackage,
                 populate: jest.fn().mockReturnValue(testPackage),
             }),
             findByIdAndUpdate: jest.fn().mockResolvedValue(testPackage),
@@ -85,12 +99,20 @@ describe('PackagesService', () => {
             }),
         };
 
+        const mockUserRepository = {
+            findById: jest.fn().mockReturnValue({
+                ...testUser,
+                save: jest.fn().mockReturnValue({}),
+            }),
+        };
+
         const module: TestingModule = await Test.createTestingModule({
             providers: [PackagesService],
             imports: [
                 MongooseModule.forFeature([
                     { name: Package.name, schema: PackageSchema },
                     { name: Surfcamp.name, schema: SurfcampSchema },
+                    { name: User.name, schema: UserSchema },
                 ]),
             ],
         })
@@ -98,6 +120,8 @@ describe('PackagesService', () => {
             .useValue(mockPackageRepository)
             .overrideProvider(getModelToken('Surfcamp'))
             .useValue(mockSurfcampRepository)
+            .overrideProvider(getModelToken('User'))
+            .useValue(mockUserRepository)
             .compile();
 
         service = module.get<PackagesService>(PackagesService);
@@ -163,5 +187,11 @@ describe('PackagesService', () => {
     test('When calling remove it returns the testPackage', async () => {
         const result = await service.remove('testid');
         expect(result).toEqual(testPackage);
+    });
+    test('When calling book it returns the testPackage', async () => {
+        const result = await service.book('testId', 'testToken');
+        const expectedResult =
+            'User 123456 successfully booked package 623081fc746cfc728c43d774';
+        expect(result).toEqual({ message: expectedResult });
     });
 });
