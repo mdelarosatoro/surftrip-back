@@ -59,4 +59,9 @@ export class PackagesController {
     remove(@Param('id') id: string) {
         return this.packagesService.remove(id);
     }
+
+    @Get(':id/book')
+    book(@Param('id') id: string, @Headers('Authorization') token: string) {
+        return this.packagesService.book(id, token);
+    }
 }

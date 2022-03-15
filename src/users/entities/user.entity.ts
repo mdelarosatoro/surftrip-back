@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 import { Document } from 'mongoose';
 
 export type UserDocument = User & Document;
@@ -38,10 +39,8 @@ export class User {
     })
     role: string;
 
-    @Prop({
-        required: true,
-    })
-    bookings: [];
+    @Prop({ ref: 'Packages' })
+    bookings: mongoose.Types.ObjectId[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

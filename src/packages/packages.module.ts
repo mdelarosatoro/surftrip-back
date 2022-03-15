@@ -5,12 +5,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PackageSchema } from './entities/package.entity';
 import { SurfcampSchema } from 'src/surfcamps/entities/surfcamp.schema';
 import { SurfcampOwnsPackageMiddleware } from 'src/middleware/surfcamp-owns-package';
+import { UserSchema } from 'src/users/entities/user.entity';
 
 @Module({
     imports: [
         MongooseModule.forFeature([
             { name: 'Package', schema: PackageSchema },
             { name: 'Surfcamp', schema: SurfcampSchema },
+            { name: 'User', schema: UserSchema },
         ]),
     ],
     controllers: [PackagesController],
@@ -22,6 +24,7 @@ export class PackagesModule {
             .apply(SurfcampOwnsPackageMiddleware)
             .exclude(
                 { path: 'packages/:id', method: RequestMethod.GET },
+                { path: 'packages/:id/book', method: RequestMethod.GET },
                 { path: 'packages', method: RequestMethod.GET },
                 { path: 'packages', method: RequestMethod.POST }
             )
