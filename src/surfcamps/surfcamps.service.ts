@@ -32,6 +32,13 @@ export class SurfcampsService {
         return this.surfcampModel.findByIdAndDelete(id);
     }
 
+    async findSurfcampPackages(id: string) {
+        const surfcampDb = await this.surfcampModel
+            .findById(id)
+            .populate('packages');
+        return surfcampDb.packages;
+    }
+
     async addPhoto(id: string, newPhoto: { photoUrl: string }) {
         const surfcampDb = await this.surfcampModel.findById(id);
         if (surfcampDb.photos.includes(newPhoto.photoUrl)) {

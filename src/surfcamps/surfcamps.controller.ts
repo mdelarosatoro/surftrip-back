@@ -37,6 +37,11 @@ export class SurfcampsController {
         return this.surfcampsService.remove(id);
     }
 
+    @Get(':id/packages')
+    findSurfcampPackages(@Param('id') id: string) {
+        return this.surfcampsService.findSurfcampPackages(id);
+    }
+
     @Post(':id/photos')
     addPhoto(@Param('id') id: string, @Body() newPhoto: { photoUrl: string }) {
         return this.surfcampsService.addPhoto(id, newPhoto);
