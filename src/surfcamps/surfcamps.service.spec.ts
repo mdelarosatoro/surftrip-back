@@ -2,9 +2,15 @@ import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Surfcamp, SurfcampSchema } from './entities/surfcamp.schema';
 import { SurfcampsService } from './surfcamps.service';
+import * as jwt from 'jsonwebtoken';
+
+jest.mock('jsonwebtoken');
 
 describe('SurfcampsService', () => {
     let service: SurfcampsService;
+
+    jwt.verify.mockReturnValue({ role: 'user', id: 'testid' });
+
     const testSurfcamp = {
         _id: '623077c5f581ffc700c6fa1e',
         customers: [],
@@ -25,6 +31,7 @@ describe('SurfcampsService', () => {
         name: 'test1',
         username: 'test1',
         email: 'test1@test.com',
+        comments: [],
         rating: 0,
     };
     const testSurfcampWithPhoto = {
@@ -47,6 +54,7 @@ describe('SurfcampsService', () => {
         name: 'test1',
         username: 'test1',
         email: 'test1@test.com',
+        comments: [],
         rating: 0,
     };
 
@@ -144,5 +152,26 @@ describe('SurfcampsService', () => {
             save: jest.fn(),
         };
         expect(JSON.stringify(result)).toEqual(JSON.stringify(expectedResult));
+    });
+    test('When calling addComment it returns the surfcamp with an added photo', async () => {
+        const result = await service.addComment(
+            'testId',
+            { comment: 'testComment', rating: 'testRating' },
+            'testToken'
+        );
+        expect(result.comments[0].comment).toBe('testComment');
+        expect(result.comments[0].user).toBe('testid');
+    });
+    test('When calling addComment without user role it throws', async () => {
+        try {
+            jwt.verify.mockReturnValue({ role: 'surfcamp', id: 'testid' });
+            await service.addComment(
+                'testId',
+                { comment: 'testComment', rating: 'testRating' },
+                'testToken'
+            );
+        } catch (error) {
+            expect(error.message).toBe('Only users can post comments');
+        }
     });
 });

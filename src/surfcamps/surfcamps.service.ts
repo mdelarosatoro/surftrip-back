@@ -1,8 +1,13 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+    ConflictException,
+    ForbiddenException,
+    Injectable,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { UpdateSurfcampDto } from './dto/update-surfcamp.dto';
 import { Model } from 'mongoose';
 import { Surfcamp } from './entities/surfcamp.schema';
+import { extractToken } from '../helpers/extract-token';
 
 @Injectable()
 export class SurfcampsService {
@@ -68,6 +73,27 @@ export class SurfcampsService {
         surfcampDb.photos = surfcampDb.photos.filter(
             (item) => item !== deletePhoto.deletePhotoUrl
         );
+        await surfcampDb.save();
+        return surfcampDb;
+    }
+
+    async addComment(
+        id: string,
+        newComment: { comment: string; rating: string },
+        token: string
+    ) {
+        const decodedToken = extractToken(token);
+        if (decodedToken.role !== 'user') {
+            throw new ForbiddenException('Only users can post comments');
+        }
+        const surfcampDb = await this.surfcampModel.findById(id);
+
+        const payload = {
+            ...newComment,
+            rating: Number(newComment.rating),
+            user: decodedToken.id,
+        };
+        surfcampDb.comments.push(payload);
         await surfcampDb.save();
         return surfcampDb;
     }

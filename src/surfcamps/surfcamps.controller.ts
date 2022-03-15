@@ -7,6 +7,8 @@ import {
     Param,
     Delete,
     Query,
+    Header,
+    Headers,
 } from '@nestjs/common';
 import { SurfcampsService } from './surfcamps.service';
 import { UpdateSurfcampDto } from './dto/update-surfcamp.dto';
@@ -66,5 +68,14 @@ export class SurfcampsController {
         @Body() deletePhoto: { deletePhotoUrl: string }
     ) {
         return this.surfcampsService.deletePhoto(id, deletePhoto);
+    }
+
+    @Post(':id/comments')
+    addComment(
+        @Headers('Authorization') token: string,
+        @Param('id') id: string,
+        @Body() newComment: { comment: string; rating: string }
+    ) {
+        return this.surfcampsService.addComment(id, newComment, token);
     }
 }
