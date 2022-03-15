@@ -52,11 +52,13 @@ export class PackagesService {
         });
     }
 
-    update(id: number, updatePackageDto: UpdatePackageDto) {
-        return `This action updates a #${id} package`;
+    update(id: string, updatePackageDto: UpdatePackageDto) {
+        return this.packageModel.findByIdAndUpdate(id, updatePackageDto, {
+            new: true,
+        });
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} package`;
+    remove(id: string) {
+        return this.packageModel.findByIdAndDelete(id);
     }
 }

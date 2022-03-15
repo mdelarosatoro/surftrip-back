@@ -42,6 +42,9 @@ export class Surfcamp {
     })
     skillLevels: string[];
 
+    @Prop()
+    photos: string[];
+
     @Prop({
         required: true,
         default: 'surfcamp',
