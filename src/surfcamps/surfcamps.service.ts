@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+    ConflictException,
+    ForbiddenException,
+    Injectable,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { UpdateSurfcampDto } from './dto/update-surfcamp.dto';
 import { Model } from 'mongoose';
@@ -79,6 +83,9 @@ export class SurfcampsService {
         token: string
     ) {
         const decodedToken = extractToken(token);
+        if (decodedToken.role !== 'user') {
+            throw new ForbiddenException('Only users can post comments');
+        }
         const surfcampDb = await this.surfcampModel.findById(id);
         const payload = {
             ...newComment,
