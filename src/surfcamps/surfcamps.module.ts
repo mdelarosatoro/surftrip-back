@@ -3,7 +3,7 @@ import { SurfcampsService } from './surfcamps.service';
 import { SurfcampsController } from './surfcamps.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { SurfcampSchema } from './entities/surfcamp.schema';
-import { SurfcampOwnershipMiddleware } from 'src/middleware/surfcamp-ownership';
+import { SurfcampOwnershipMiddleware } from '../middleware/surfcamp-ownership';
 
 @Module({
     imports: [
@@ -19,9 +19,10 @@ export class SurfcampsModule {
         consumer
             .apply(SurfcampOwnershipMiddleware)
             .exclude(
-                { path: 'surfcamps/:id', method: RequestMethod.GET },
                 { path: 'surfcamps', method: RequestMethod.GET },
-                { path: 'surfcamps', method: RequestMethod.POST }
+                { path: 'surfcamps', method: RequestMethod.POST },
+                { path: 'surfcamps/:id', method: RequestMethod.GET },
+                { path: 'surfcamps/:id/packages', method: RequestMethod.GET }
             )
             .forRoutes(SurfcampsController);
     }

@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { Document } from 'mongoose';
+import { Package } from 'src/packages/entities/package.entity';
 import { User } from 'src/users/entities/user.entity';
 
 export type SurfcampDocument = Surfcamp & Document;
@@ -41,17 +42,20 @@ export class Surfcamp {
     })
     skillLevels: string[];
 
+    @Prop()
+    photos: string[];
+
     @Prop({
         required: true,
         default: 'surfcamp',
     })
     role: string;
 
-    @Prop()
-    packages: [];
+    @Prop({ ref: 'Package' })
+    packages: mongoose.Types.ObjectId[];
 
-    @Prop({ type: mongoose.Types.ObjectId, ref: 'User' })
-    customers: User[];
+    @Prop({ ref: 'User' })
+    customers: mongoose.Types.ObjectId[];
 
     @Prop()
     rating: number[];

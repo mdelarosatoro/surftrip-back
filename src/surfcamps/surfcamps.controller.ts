@@ -36,4 +36,22 @@ export class SurfcampsController {
     remove(@Param('id') id: string) {
         return this.surfcampsService.remove(id);
     }
+
+    @Get(':id/packages')
+    findSurfcampPackages(@Param('id') id: string) {
+        return this.surfcampsService.findSurfcampPackages(id);
+    }
+
+    @Post(':id/photos')
+    addPhoto(@Param('id') id: string, @Body() newPhoto: { photoUrl: string }) {
+        return this.surfcampsService.addPhoto(id, newPhoto);
+    }
+
+    @Patch(':id/photos')
+    deletePhoto(
+        @Param('id') id: string,
+        @Body() deletePhoto: { deletePhotoUrl: string }
+    ) {
+        return this.surfcampsService.deletePhoto(id, deletePhoto);
+    }
 }
