@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateSurfcampDto } from './dto/create-surfcamp.dto';
 import { UpdateSurfcampDto } from './dto/update-surfcamp.dto';
 import { Model } from 'mongoose';
 import { Surfcamp } from './entities/surfcamp.schema';
@@ -11,23 +10,21 @@ export class SurfcampsService {
         @InjectModel('Surfcamp') private readonly surfcampModel: Model<Surfcamp>
     ) {}
 
-    create(createSurfcampDto: CreateSurfcampDto) {
-        return 'This action adds a new surfcamp';
-    }
-
     findAll() {
         return this.surfcampModel.find({});
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} surfcamp`;
+    findOne(id: string) {
+        return this.surfcampModel.findById(id);
     }
 
-    update(id: number, updateSurfcampDto: UpdateSurfcampDto) {
-        return `This action updates a #${id} surfcamp`;
+    update(id: string, updateSurfcampDto: UpdateSurfcampDto) {
+        return this.surfcampModel.findByIdAndUpdate(id, updateSurfcampDto, {
+            new: true,
+        });
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} surfcamp`;
+    remove(id: string) {
+        return this.surfcampModel.findByIdAndDelete(id);
     }
 }
