@@ -79,22 +79,32 @@ describe('UsersService', () => {
         });
 
         test('When calling loginUser it returns a token', async () => {
-            const result = await service.loginUser(testUserLogin);
+            const result = await service.loginUser({ ...testUserLogin });
             expect(result).toEqual({ token: 'token' });
         });
 
+        test('When calling loginToken with a bad token it throws', async () => {
+            try {
+                jwt.verify.mockReturnValue({});
+                await service.loginToken(
+                    `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMmY1MzQ3NDc3NjFlZDZiODFiNDI3MiIsIm5hbWUiOiJ0ZXN0IiwibGFzdE5hbWUiOiJ0ZXN0Iiwicm9sZSI6InVzZXIiLCJpYXQiOjE2NDcyNzIzMzV9.YItW0NY-gM88ah7gVANJrpeZEJwjv8-W0NJCItHcKQI`
+                );
+            } catch (error) {
+                expect(error.message).toEqual('Unauthorized');
+            }
+        });
         test('When calling loginTokenUser it returns a user', async () => {
-            jwt.verify.mockReturnValue(testUser);
-            const result = await service.loginTokenUser(
+            jwt.verify.mockReturnValue({ ...testUser, id: 1 });
+            const result = await service.loginToken(
                 `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMmY1MzQ3NDc3NjFlZDZiODFiNDI3MiIsIm5hbWUiOiJ0ZXN0IiwibGFzdE5hbWUiOiJ0ZXN0Iiwicm9sZSI6InVzZXIiLCJpYXQiOjE2NDcyNzIzMzV9.YItW0NY-gM88ah7gVANJrpeZEJwjv8-W0NJCItHcKQI`
             );
-            expect(result).toEqual(testUser);
+            expect(result).toEqual({ ...testUser, id: 1 });
         });
 
         test('When calling loginTokenUser with a bad token it throws', async () => {
             jwt.verify.mockReturnValue(false);
             try {
-                await service.loginTokenUser(`Bearer aaaa`);
+                await service.loginToken(`Bearer aaaa`);
             } catch (error) {
                 expect(error.message).toEqual('Unauthorized');
             }
@@ -110,18 +120,10 @@ describe('UsersService', () => {
             expect(result).toEqual({ token: 'token' });
         });
 
-        test('When calling loginTokenSurfcamp it returns a surfcamp', async () => {
-            jwt.verify.mockReturnValue(testSurfcamp);
-            const result = await service.loginTokenSurfcamp(
-                `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMmY1MzQ3NDc3NjFlZDZiODFiNDI3MiIsIm5hbWUiOiJ0ZXN0IiwibGFzdE5hbWUiOiJ0ZXN0Iiwicm9sZSI6InVzZXIiLCJpYXQiOjE2NDcyNzIzMzV9.YItW0NY-gM88ah7gVANJrpeZEJwjv8-W0NJCItHcKQI`
-            );
-            expect(result).toEqual(testSurfcamp);
-        });
-
         test('When calling loginTokenSurfcamp with a bad token it throws', async () => {
             jwt.verify.mockReturnValue(false);
             try {
-                await service.loginTokenSurfcamp(`Bearer aaaa`);
+                await service.loginToken(`Bearer aaaa`);
             } catch (error) {
                 expect(error.message).toEqual('Unauthorized');
             }

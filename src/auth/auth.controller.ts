@@ -1,13 +1,13 @@
 import { Body, Controller, Get, Headers, Post } from '@nestjs/common';
-import { UserI } from 'src/interfaces/user.interface';
+import { UserI } from '../interfaces/user.interface';
 import { UserDto, UserLoginDto } from './dto/user.dto';
 import { AuthService } from './auth.service';
 import {
     UserTokenPayloadI,
     SurfcampTokenPayloadI,
-} from 'src/interfaces/auth.interface';
+} from '../interfaces/auth.interface';
 import { SurfcampDto } from './dto/surfcamp.dto';
-import { Surfcamp } from 'src/surfcamps/entities/surfcamp.schema';
+import { Surfcamp } from '../surfcamps/entities/surfcamp.schema';
 
 @Controller('auth')
 export class AuthController {
@@ -23,11 +23,11 @@ export class AuthController {
         return this.authService.loginUser(userLoginDto);
     }
 
-    @Get('users/login-token')
-    async loginTokenUser(
+    @Get('login-token')
+    async loginToken(
         @Headers('Authorization') token: string
-    ): Promise<UserTokenPayloadI> {
-        return this.authService.loginTokenUser(token);
+    ): Promise<UserTokenPayloadI | SurfcampTokenPayloadI> {
+        return this.authService.loginToken(token);
     }
 
     @Post('surfcamps/register')
@@ -40,12 +40,5 @@ export class AuthController {
     @Post('surfcamps/login')
     async loginSurfcamp(@Body() userLoginDto: UserLoginDto): Promise<any> {
         return this.authService.loginSurfcamp(userLoginDto);
-    }
-
-    @Get('surfcamps/login-token')
-    async loginTokenSurfcamp(
-        @Headers('Authorization') token: string
-    ): Promise<SurfcampTokenPayloadI> {
-        return this.authService.loginTokenSurfcamp(token);
     }
 }

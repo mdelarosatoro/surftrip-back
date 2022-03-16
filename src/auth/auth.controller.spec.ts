@@ -15,10 +15,9 @@ describe('AuthController', () => {
                     useValue: {
                         registerUser: jest.fn(),
                         loginUser: jest.fn(),
-                        loginTokenUser: jest.fn(),
+                        loginToken: jest.fn(),
                         registerSurfcamp: jest.fn(),
                         loginSurfcamp: jest.fn(),
-                        loginTokenSurfcamp: jest.fn(),
                     },
                 },
             ],
@@ -55,8 +54,8 @@ describe('AuthController', () => {
     describe('When controller.loginTokenUser is called', () => {
         it('It should call service.loginTokenUser', () => {
             const token = 'baba';
-            controller.loginTokenUser(token);
-            expect(service.loginTokenUser).toHaveBeenCalled();
+            controller.loginToken(token);
+            expect(service.loginToken).toHaveBeenCalled();
         });
     });
 
@@ -85,8 +84,8 @@ describe('AuthController', () => {
     describe('When controller.loginTokenSurfcamp is called', () => {
         it('It should call service.loginTokenSurfcamp', () => {
             const token = 'baba';
-            controller.loginTokenSurfcamp(token);
-            expect(service.loginTokenSurfcamp).toHaveBeenCalled();
+            controller.loginToken(token);
+            expect(service.loginToken).toHaveBeenCalled();
         });
     });
 });

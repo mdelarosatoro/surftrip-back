@@ -8,6 +8,9 @@ import { SurfcampsModule } from './surfcamps/surfcamps.module';
 import { PackagesModule } from './packages/packages.module';
 import LogsMiddleware from './helpers/logs-middleware';
 
+if (process.env.NODE_ENV === 'test') {
+    process.env.DB_NAME = 'surftrip-test';
+}
 @Module({
     imports: [
         ConfigModule.forRoot(),
