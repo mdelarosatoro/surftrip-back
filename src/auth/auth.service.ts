@@ -56,7 +56,7 @@ export class AuthService {
 
     async loginToken(token: string): Promise<any> {
         const tokenContents = extractToken(token);
-        if (!tokenContents) {
+        if (!tokenContents.id) {
             throw new UnauthorizedException();
         }
 

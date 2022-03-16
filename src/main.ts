@@ -3,7 +3,7 @@ import helmet from 'helmet';
 import { AppModule } from './app.module';
 import * as expressjwt from 'express-jwt';
 
-async function bootstrap() {
+export async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const port = process.env.PORT;
     app.enableCors();
@@ -19,11 +19,13 @@ async function bootstrap() {
                 '/auth/login-token',
                 '/auth/surfcamps/login',
                 '/auth/surfcamps/register',
+                '/',
             ],
         })
     );
-    await app.listen(port, () => {
+    const server = await app.listen(port, () => {
         console.log(`Server started successfully in port ${port}`);
     });
+    return { app, server };
 }
-bootstrap();
+// bootstrap();
