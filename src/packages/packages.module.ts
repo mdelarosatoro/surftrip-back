@@ -3,9 +3,9 @@ import { PackagesService } from './packages.service';
 import { PackagesController } from './packages.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PackageSchema } from './entities/package.entity';
-import { SurfcampSchema } from 'src/surfcamps/entities/surfcamp.schema';
-import { SurfcampOwnsPackageMiddleware } from 'src/middleware/surfcamp-owns-package';
-import { UserSchema } from 'src/users/entities/user.entity';
+import { SurfcampSchema } from '../surfcamps/entities/surfcamp.schema';
+import { SurfcampOwnsPackageMiddleware } from '../middleware/surfcamp-owns-package';
+import { UserSchema } from '../users/entities/user.entity';
 
 @Module({
     imports: [

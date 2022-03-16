@@ -19,7 +19,6 @@ export class SurfcampOwnsPackageMiddleware implements NestMiddleware {
         const token = req.headers.authorization.split(' ')[1];
         const tokenContents = jwt.verify(token, process.env.SECRET);
         const packageDb = await this.packageModel.findById(id);
-        console.log(packageDb);
         if (packageDb.surfcamp === tokenContents.id) {
             next();
         } else {

@@ -8,7 +8,7 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './entities/user.entity';
-import { UserOwnershipMiddleware } from 'src/middleware/user-ownership';
+import { UserOwnershipMiddleware } from '../middleware/user-ownership';
 
 @Module({
     imports: [

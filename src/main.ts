@@ -16,10 +16,9 @@ async function bootstrap() {
             path: [
                 '/auth/users/login',
                 '/auth/users/register',
-                '/auth/users/login-token',
+                '/auth/login-token',
                 '/auth/surfcamps/login',
                 '/auth/surfcamps/register',
-                '/auth/surfcamps/login-token',
             ],
         })
     );
