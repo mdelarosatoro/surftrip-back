@@ -1,7 +1,5 @@
-import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
-import { Document } from 'mongoose';
-import { Package } from 'src/packages/entities/package.entity';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { Document } from 'mongoose';
 import { User } from 'src/users/entities/user.entity';
 
 export type SurfcampDocument = Surfcamp & Document;

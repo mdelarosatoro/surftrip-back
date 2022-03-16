@@ -1,18 +1,15 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UserI } from 'src/interfaces/user.interface';
+import { UserI } from '../interfaces/user.interface';
 import { UserDto, UserLoginDto } from './dto/user.dto';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import {
-    SurfcampTokenPayloadI,
-    UserTokenPayloadI,
-} from 'src/interfaces/auth.interface';
 
 import { SurfcampDto, SurfcampLoginDto } from './dto/surfcamp.dto';
-import { Surfcamp } from 'src/surfcamps/entities/surfcamp.schema';
-import { User } from 'src/users/entities/user.entity';
+import { Surfcamp } from '../surfcamps/entities/surfcamp.schema';
+import { User } from '../users/entities/user.entity';
+import { extractToken } from '../helpers/extract-token';
 @Injectable()
 export class AuthService {
     constructor(
@@ -57,9 +54,8 @@ export class AuthService {
         }
     }
 
-    async loginTokenUser(token: string): Promise<UserTokenPayloadI> {
-        const tokenExtracted = token.split(' ')[1];
-        const tokenContents = jwt.verify(tokenExtracted, process.env.SECRET);
+    async loginToken(token: string): Promise<any> {
+        const tokenContents = extractToken(token);
         if (!tokenContents) {
             throw new UnauthorizedException();
         }
@@ -102,15 +98,5 @@ export class AuthService {
         } else {
             throw new UnauthorizedException('Username or password incorrect');
         }
-    }
-
-    async loginTokenSurfcamp(token: string): Promise<SurfcampTokenPayloadI> {
-        const tokenExtracted = token.split(' ')[1];
-        const tokenContents = jwt.verify(tokenExtracted, process.env.SECRET);
-        if (!tokenContents) {
-            throw new UnauthorizedException();
-        }
-
-        return tokenContents;
     }
 }

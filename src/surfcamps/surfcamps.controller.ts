@@ -7,7 +7,6 @@ import {
     Param,
     Delete,
     Query,
-    Header,
     Headers,
 } from '@nestjs/common';
 import { SurfcampsService } from './surfcamps.service';

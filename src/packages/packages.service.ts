@@ -54,12 +54,11 @@ export class PackagesService {
                 customers: 0,
                 role: 0,
             });
-        const filteredPackages = packagesDb.filter(
+        return packagesDb.filter(
             (item) =>
                 item.price <= Number(query.price) &&
                 item.days <= Number(query.days)
         );
-        return filteredPackages;
     }
 
     findOne(id: string) {
