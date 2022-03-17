@@ -32,6 +32,11 @@ export class Surfcamp {
     @Prop({
         required: true,
     })
+    description: string;
+
+    @Prop({
+        required: true,
+    })
     location: string;
 
     @Prop({
@@ -51,9 +56,6 @@ export class Surfcamp {
 
     @Prop({ ref: 'Package' })
     packages: mongoose.Types.ObjectId[];
-
-    // @Prop({ ref: 'User' })
-    // customers: mongoose.Types.ObjectId[];
 
     @Prop({
         type: [
