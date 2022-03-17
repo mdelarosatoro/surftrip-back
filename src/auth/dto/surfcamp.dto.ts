@@ -3,6 +3,7 @@ export class SurfcampDto {
     readonly username: string;
     readonly password: string;
     readonly name: string;
+    readonly description: string;
     readonly lastName: string;
     readonly location: string;
     readonly skillLevels: [string];
