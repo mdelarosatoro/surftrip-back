@@ -38,6 +38,11 @@ export class User {
     })
     role: string;
 
+    @Prop({
+        default: '',
+    })
+    profilePicUrl: string;
+
     @Prop({ ref: 'Packages' })
     bookings: mongoose.Types.ObjectId[];
 }

@@ -4,6 +4,7 @@ export class UserDto {
     readonly password: string;
     readonly name: string;
     readonly lastName: string;
+    readonly ProfilePicUrl: string;
 }
 
 export class UserLoginDto {

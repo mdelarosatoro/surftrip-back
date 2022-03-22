@@ -8,6 +8,10 @@ import { User } from './entities/user.entity';
 export class UsersService {
     constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
+    async findAll() {
+        return await this.userModel.find({});
+    }
+
     async findOne(id: string): Promise<User> {
         return await this.userModel.findById(id);
     }

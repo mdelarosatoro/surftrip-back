@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { SurfcampsService } from './surfcamps.service';
 import { UpdateSurfcampDto } from './dto/update-surfcamp.dto';
+import { PhotoI } from 'src/interfaces/photos.interface';
 
 @Controller('surfcamps')
 export class SurfcampsController {
@@ -24,12 +25,21 @@ export class SurfcampsController {
     @Get('search')
     searchSurfcamps(
         @Query('location') location?: string,
-        @Query('rating') rating?: string
+        @Query('rating') rating?: string,
+        @Query('skillBeginner') skillBeginner?: string,
+        @Query('skillIntermediate') skillIntermediate?: string,
+        @Query('skillAdvanced') skillAdvanced?: string,
+        @Query('skillExpert') skillExpert?: string
     ) {
         const query = {
             location,
             rating,
+            skillLevels: [],
         };
+        JSON.parse(skillBeginner) && query.skillLevels.push('Beginner');
+        JSON.parse(skillIntermediate) && query.skillLevels.push('Intermediate');
+        JSON.parse(skillAdvanced) && query.skillLevels.push('Advanced');
+        JSON.parse(skillExpert) && query.skillLevels.push('Expert');
         return this.surfcampsService.search(query);
     }
 
@@ -57,7 +67,7 @@ export class SurfcampsController {
     }
 
     @Post(':id/photos')
-    addPhoto(@Param('id') id: string, @Body() newPhoto: { photoUrl: string }) {
+    addPhoto(@Param('id') id: string, @Body() newPhoto: PhotoI) {
         return this.surfcampsService.addPhoto(id, newPhoto);
     }
 

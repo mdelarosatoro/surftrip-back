@@ -43,7 +43,13 @@ export class AuthService {
                     role: possibleUserDb.role,
                 };
                 const token = jwt.sign(payload, process.env.SECRET);
-                return { token };
+                return {
+                    token,
+                    id: possibleUserDb.id,
+                    name: possibleUserDb.name,
+                    lastName: possibleUserDb.lastName,
+                    role: possibleUserDb.role,
+                };
             } else {
                 throw new UnauthorizedException(
                     'Username or password incorrect'

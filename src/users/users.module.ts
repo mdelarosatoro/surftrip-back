@@ -21,7 +21,10 @@ export class UsersModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
         consumer
             .apply(UserOwnershipMiddleware)
-            .exclude({ path: 'users/:id', method: RequestMethod.GET })
+            .exclude(
+                { path: 'users/:id', method: RequestMethod.GET },
+                { path: 'users', method: RequestMethod.GET }
+            )
             .forRoutes(UsersController);
     }
 }

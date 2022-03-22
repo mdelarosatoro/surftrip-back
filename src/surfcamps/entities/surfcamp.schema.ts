@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
+import { PhotoI } from 'src/interfaces/photos.interface';
 import { User } from 'src/users/entities/user.entity';
 
 export type SurfcampDocument = Surfcamp & Document;
@@ -45,8 +46,23 @@ export class Surfcamp {
     })
     skillLevels: string[];
 
-    @Prop()
-    photos: string[];
+    @Prop({
+        type: [
+            {
+                photoUrl: {
+                    type: String,
+                    required: true,
+                },
+                description: {
+                    type: String,
+                    required: true,
+                },
+            },
+        ],
+        required: true,
+        default: [],
+    })
+    photos: PhotoI[];
 
     @Prop({
         required: true,

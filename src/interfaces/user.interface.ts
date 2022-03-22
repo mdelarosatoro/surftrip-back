@@ -5,6 +5,7 @@ export interface UserI {
     password: string;
     name: string;
     lastName: string;
+    profilePicUrl: string;
 }
 
 export interface UserDbI {
@@ -14,4 +15,5 @@ export interface UserDbI {
     name: string;
     lastName: string;
     role: string;
+    profilePicUrl: string;
 }
