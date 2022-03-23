@@ -17,3 +17,8 @@ export interface UserDbI {
     role: string;
     profilePicUrl: string;
 }
+
+export interface UpdateUserI {
+    user: UserI;
+    token: string;
+}

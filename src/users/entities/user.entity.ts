@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
+import { Package } from 'src/packages/entities/package.entity';
 
 export type UserDocument = User & Document;
 
@@ -43,8 +44,29 @@ export class User {
     })
     profilePicUrl: string;
 
-    @Prop({ ref: 'Packages' })
-    bookings: mongoose.Types.ObjectId[];
+    @Prop({
+        type: [
+            {
+                package: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Package',
+                    required: true,
+                },
+                bookedAt: {
+                    type: Date,
+                    default: Date.now(),
+                },
+            },
+        ],
+        required: true,
+        default: [],
+    })
+    bookings: [
+        {
+            package: any;
+            bookedAt: number;
+        }
+    ];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

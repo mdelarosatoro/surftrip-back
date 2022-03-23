@@ -115,6 +115,18 @@ export class SurfcampsService {
         });
         surfcampDb.rating = surfcampDb.rating / surfcampDb.comments.length;
         await surfcampDb.save();
-        return surfcampDb;
+        return surfcampDb.comments;
+    }
+
+    async getSurfcampCommentsById(id: string) {
+        const surfcampDb = await this.surfcampModel
+            .findById(id)
+            .populate('comments.user', {
+                name: 1,
+                lastName: 1,
+                profilePicUrl: 1,
+            });
+
+        return surfcampDb.comments;
     }
 }

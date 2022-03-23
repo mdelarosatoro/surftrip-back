@@ -87,4 +87,9 @@ export class SurfcampsController {
     ) {
         return this.surfcampsService.addComment(id, newComment, token);
     }
+
+    @Get(':id/comments')
+    getSurfcampCommentsById(@Param('id') id: string) {
+        return this.surfcampsService.getSurfcampCommentsById(id);
+    }
 }

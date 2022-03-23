@@ -88,7 +88,7 @@ export class PackagesService {
             packageDb.surfcamp
         );
 
-        userDb.bookings.push(packageDb._id);
+        userDb.bookings.push({ package: packageDb._id, bookedAt: Date.now() });
         await userDb.save();
         const newBookObject = {
             user: tokenContents.id,

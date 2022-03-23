@@ -40,6 +40,8 @@ export class AuthService {
                     id: possibleUserDb.id,
                     name: possibleUserDb.name,
                     lastName: possibleUserDb.lastName,
+                    email: possibleUserDb.email,
+                    profilePicUrl: possibleUserDb.profilePicUrl,
                     role: possibleUserDb.role,
                 };
                 const token = jwt.sign(payload, process.env.SECRET);
@@ -48,6 +50,8 @@ export class AuthService {
                     id: possibleUserDb.id,
                     name: possibleUserDb.name,
                     lastName: possibleUserDb.lastName,
+                    email: possibleUserDb.email,
+                    profilePicUrl: possibleUserDb.profilePicUrl,
                     role: possibleUserDb.role,
                 };
             } else {
