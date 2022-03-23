@@ -93,6 +93,7 @@ export class PackagesService {
         const newBookObject = {
             user: tokenContents.id,
             package: id,
+            bookedAt: Date.now(),
         };
         surfcampDb.customers.push(newBookObject);
         await surfcampDb.save();

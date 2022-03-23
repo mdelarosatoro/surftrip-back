@@ -86,6 +86,10 @@ export class Surfcamp {
                     ref: 'Package',
                     required: true,
                 },
+                bookedAt: {
+                    type: Date,
+                    default: Date.now(),
+                },
             },
         ],
         required: true,
@@ -95,6 +99,7 @@ export class Surfcamp {
         {
             user: User;
             package: string;
+            bookedAt: number;
         }
     ];
 
