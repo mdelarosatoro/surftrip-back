@@ -33,12 +33,25 @@ export class PackagesController {
     @Get('search')
     searchPackages(
         @Query('price') price?: string,
-        @Query('days') days?: string
+        @Query('days') days?: string,
+        @Query('location') location?: string,
+        @Query('rating') rating?: string,
+        @Query('skillBeginner') skillBeginner?: string,
+        @Query('skillIntermediate') skillIntermediate?: string,
+        @Query('skillAdvanced') skillAdvanced?: string,
+        @Query('skillExpert') skillExpert?: string
     ) {
         const query = {
             price,
             days,
+            location,
+            rating,
+            skillLevels: [],
         };
+        JSON.parse(skillBeginner) && query.skillLevels.push('Beginner');
+        JSON.parse(skillIntermediate) && query.skillLevels.push('Intermediate');
+        JSON.parse(skillAdvanced) && query.skillLevels.push('Advanced');
+        JSON.parse(skillExpert) && query.skillLevels.push('Expert');
         return this.packagesService.search(query);
     }
 

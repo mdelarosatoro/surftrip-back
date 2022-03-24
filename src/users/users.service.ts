@@ -14,7 +14,7 @@ export class UsersService {
     }
 
     async findOne(id: string): Promise<User> {
-        return await this.userModel.findById(id).populate('bookings');
+        return await this.userModel.findById(id).populate('bookings.package');
     }
 
     async update(id: string, updateUserDto: UpdateUserDto) {

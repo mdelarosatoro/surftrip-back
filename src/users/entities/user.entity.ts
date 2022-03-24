@@ -63,7 +63,7 @@ export class User {
     })
     bookings: [
         {
-            package: any;
+            package: Package;
             bookedAt: number;
         }
     ];

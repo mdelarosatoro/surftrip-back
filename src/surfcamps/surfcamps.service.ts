@@ -23,13 +23,12 @@ export class SurfcampsService {
     }
 
     async search(query) {
-        console.log(Number(query.rating));
         const surfcampsDb = await this.surfcampModel
             .find({})
             .populate('packages', { surfcamp: 0 });
         return surfcampsDb.filter((item) => {
             return (
-                (item.location !== ''
+                (query.location !== ''
                     ? item.location.includes(query.location)
                     : true) &&
                 (query.rating !== ''

@@ -171,6 +171,9 @@ describe('PackagesService', () => {
         const query = {
             price: 800,
             days: 25,
+            rating: '',
+            location: '',
+            skillLevels: [],
         };
         const result = await service.search(query);
 

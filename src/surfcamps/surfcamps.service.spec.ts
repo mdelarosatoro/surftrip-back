@@ -25,13 +25,15 @@ describe('SurfcampsService', () => {
             },
         ],
         role: 'surfcamp',
-        photos: ['http://testphoto.coms'],
+        photos: [{ photoUrl: 'http://testphoto.coms', description: 'test' }],
         skillLevels: ['Beginner'],
         location: 'test',
         name: 'test1',
         username: 'test1',
         email: 'test1@test.com',
-        comments: [],
+        comments: [
+            { user: 'testId', comment: 'testComment', rating: 0, _id: '' },
+        ],
         rating: 0,
     };
     const testSurfcampWithPhoto = {
@@ -48,13 +50,18 @@ describe('SurfcampsService', () => {
             },
         ],
         role: 'surfcamp',
-        photos: ['http://testphoto.coms', 'testPhoto2'],
+        photos: [
+            { photoUrl: 'http://testphoto.coms', description: 'test' },
+            { photoUrl: 'testPhoto2', description: 'test' },
+        ],
         skillLevels: ['Beginner'],
         location: 'test',
         name: 'test1',
         username: 'test1',
         email: 'test1@test.com',
-        comments: [],
+        comments: [
+            { user: 'testId', comment: 'testComment', rating: 0, _id: '' },
+        ],
         rating: 0,
     };
 
@@ -99,6 +106,7 @@ describe('SurfcampsService', () => {
         const query = {
             location: 'test',
             rating: 0,
+            skillLevels: ['Beginner'],
         };
         const result = await service.search(query);
         expect(result).toEqual([testSurfcamp]);
@@ -122,6 +130,7 @@ describe('SurfcampsService', () => {
     test('When calling addPhoto it returns the surfcamp with an added photo', async () => {
         const result = await service.addPhoto('testid', {
             photoUrl: 'testPhoto2',
+            description: 'test',
         });
         const expectedResult = {
             ...testSurfcampWithPhoto,
@@ -134,6 +143,7 @@ describe('SurfcampsService', () => {
         try {
             await service.addPhoto('testid', {
                 photoUrl: 'http://testphoto.coms',
+                description: 'test',
             });
         } catch (error) {
             expect(error.message).toBe(
@@ -141,26 +151,28 @@ describe('SurfcampsService', () => {
             );
         }
     });
-    test('When calling deletePhoto it returns the surfcamp with an added photo', async () => {
+    test('When calling deletePhoto it returns the surfcamp without the photo deleted', async () => {
         const result = await service.deletePhoto('testid', {
             deletePhotoUrl: 'testPhoto2',
         });
         const expectedResult = {
             ...testSurfcampWithPhoto,
-            photos: ['http://testphoto.coms'],
+            photos: [
+                { photoUrl: 'http://testphoto.coms', description: 'test' },
+            ],
             populate: jest.fn(),
             save: jest.fn(),
         };
         expect(JSON.stringify(result)).toEqual(JSON.stringify(expectedResult));
     });
-    test('When calling addComment it returns the surfcamp with an added photo', async () => {
+    test('When calling addComment it returns the surfcamp with an added comment', async () => {
         const result = await service.addComment(
             'testId',
             { comment: 'testComment', rating: 'testRating' },
             'testToken'
         );
-        expect(result.comments[0].comment).toBe('testComment');
-        expect(result.comments[0].user).toBe('testid');
+        expect(result[0].comment).toBe('testComment');
+        expect(result[0].user).toBe('testId');
     });
     test('When calling addComment without user role it throws', async () => {
         try {

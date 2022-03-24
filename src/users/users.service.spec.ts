@@ -2,9 +2,23 @@ import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { User, UserSchema } from './entities/user.entity';
 import { UsersService } from './users.service';
+import * as jwt from 'jsonwebtoken';
+
+jest.mock('jsonwebtoken');
 
 describe('UsersService', () => {
     let service: UsersService;
+
+    const tokenPayload = {
+        id: '',
+        name: '',
+        lastName: '',
+        email: '',
+        profilePicUrl: '',
+        role: '',
+    };
+
+    jwt.sign.mockReturnValue(tokenPayload);
 
     const testUser = {
         email: 'test@example.com',
@@ -16,7 +30,9 @@ describe('UsersService', () => {
     };
 
     const mockUserRepository = {
-        findById: jest.fn().mockResolvedValue(testUser),
+        findById: jest.fn().mockReturnValue({
+            populate: jest.fn().mockReturnValue(testUser),
+        }),
         findByIdAndUpdate: jest.fn().mockResolvedValue(testUser),
         findByIdAndDelete: jest.fn().mockResolvedValue(testUser),
     };
@@ -49,7 +65,7 @@ describe('UsersService', () => {
     });
     test('When calling update it returns the test user', async () => {
         const result = await service.update(id, { name: 'testUser' });
-        expect(result).toBe(testUser);
+        expect(result).toEqual({ user: testUser, token: tokenPayload });
     });
     test('When calling remove it returns the test user', async () => {
         const result = await service.remove(id);

@@ -43,7 +43,14 @@ describe('SurfcampsController', () => {
     });
     describe('When controller.searchSurfcamps is called', () => {
         it('It should call service.search', () => {
-            controller.searchSurfcamps();
+            controller.searchSurfcamps(
+                'true',
+                'true',
+                'true',
+                'true',
+                'true',
+                'true'
+            );
             expect(service.search).toHaveBeenCalled();
         });
     });
@@ -73,7 +80,10 @@ describe('SurfcampsController', () => {
     });
     describe('When controller.addPhoto is called', () => {
         it('It should call service.addPhoto', () => {
-            controller.addPhoto('fakeid', { photoUrl: 'testurl' });
+            controller.addPhoto('fakeid', {
+                photoUrl: 'testurl',
+                description: 'test',
+            });
             expect(service.addPhoto).toHaveBeenCalled();
         });
     });
