@@ -35,6 +35,7 @@ describe('UsersService', () => {
         }),
         findByIdAndUpdate: jest.fn().mockResolvedValue(testUser),
         findByIdAndDelete: jest.fn().mockResolvedValue(testUser),
+        find: jest.fn().mockResolvedValue([testUser]),
     };
 
     beforeEach(async () => {
@@ -58,6 +59,11 @@ describe('UsersService', () => {
     });
 
     const id = 'f1i0jx901j23dosi2m';
+
+    test('When calling findAll it returns the test user', async () => {
+        const result = await service.findAll();
+        expect(result).toEqual([testUser]);
+    });
 
     test('When calling findOne it returns the test user', async () => {
         const result = await service.findOne(id);

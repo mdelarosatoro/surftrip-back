@@ -22,6 +22,7 @@ describe('SurfcampsController', () => {
                         addPhoto: jest.fn(),
                         deletePhoto: jest.fn(),
                         addComment: jest.fn(),
+                        getSurfcampCommentsById: jest.fn(),
                     },
                 },
             ],
@@ -100,6 +101,12 @@ describe('SurfcampsController', () => {
                 rating: '2',
             });
             expect(service.addComment).toHaveBeenCalled();
+        });
+    });
+    describe('When controller.getSurfcampCommentsById is called', () => {
+        it('It should call service.getSurfcampCommentsById', () => {
+            controller.getSurfcampCommentsById('testId');
+            expect(service.getSurfcampCommentsById).toHaveBeenCalled();
         });
     });
 });

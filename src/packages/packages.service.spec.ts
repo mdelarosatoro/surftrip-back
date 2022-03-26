@@ -23,7 +23,7 @@ describe('PackagesService', () => {
         price: 700,
         surfcamp: {
             _id: '623077c5f581ffc700c6fa1e',
-            rating: [],
+            rating: 5,
             photos: ['http://testphoto.coms'],
             skillLevels: ['Beginner'],
             location: 'test',
@@ -41,7 +41,7 @@ describe('PackagesService', () => {
         price: 700,
         surfcamp: {
             _id: '623077c5f581ffc700c6fa1e',
-            rating: [],
+            rating: 5,
             photos: ['http://testphoto.coms'],
             skillLevels: ['Beginner'],
             location: 'test',
@@ -169,11 +169,23 @@ describe('PackagesService', () => {
     });
     test('When calling search it returns the testPackage', async () => {
         const query = {
-            price: 800,
-            days: 25,
+            price: '',
+            days: '',
             rating: '',
             location: '',
             skillLevels: [],
+        };
+        const result = await service.search(query);
+
+        expect(result).toEqual([testPackageResult]);
+    });
+    test('When calling search it returns the testPackage', async () => {
+        const query = {
+            price: 800,
+            days: 25,
+            rating: 5,
+            location: 'test',
+            skillLevels: ['Beginner'],
         };
         const result = await service.search(query);
 

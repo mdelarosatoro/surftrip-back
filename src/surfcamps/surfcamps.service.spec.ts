@@ -104,6 +104,15 @@ describe('SurfcampsService', () => {
     });
     test('When calling search it returns the testSurfcamp in an array', async () => {
         const query = {
+            location: '',
+            rating: '',
+            skillLevels: [],
+        };
+        const result = await service.search(query);
+        expect(result).toEqual([testSurfcamp]);
+    });
+    test('When calling search it returns the testSurfcamp in an array', async () => {
+        const query = {
             location: 'test',
             rating: 0,
             skillLevels: ['Beginner'],
@@ -185,5 +194,9 @@ describe('SurfcampsService', () => {
         } catch (error) {
             expect(error.message).toBe('Only users can post comments');
         }
+    });
+    test('When calling getSurfcampCommentsById without user role it throws', async () => {
+        const result = await service.getSurfcampCommentsById('testId');
+        expect(result).toEqual(testSurfcamp.comments);
     });
 });
