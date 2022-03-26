@@ -27,6 +27,7 @@
         "@nestjs/mapped-types": "*",
         "@nestjs/mongoose": "^9.0.2",
         "@nestjs/platform-express": "^8.0.0",
+        "@nestjs/platform-socket.io": "^8.4.3",
         "bcryptjs": "^2.4.3",
         "express-jwt": "^6.1.1",
         "helmet": "^5.0.2",

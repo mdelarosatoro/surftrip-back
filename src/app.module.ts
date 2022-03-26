@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { SurfcampsModule } from './surfcamps/surfcamps.module';
 import { PackagesModule } from './packages/packages.module';
+import { SocketGateway } from './socket/socket.gateway';
 import LogsMiddleware from './helpers/logs-middleware';
 
 if (process.env.NODE_ENV === 'test') {
@@ -23,7 +24,7 @@ if (process.env.NODE_ENV === 'test') {
         PackagesModule,
     ],
     controllers: [AppController],
-    providers: [],
+    providers: [SocketGateway],
 })
 export class AppModule {
     configure(consumer: MiddlewareConsumer) {
