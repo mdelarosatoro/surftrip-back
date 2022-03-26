@@ -8,6 +8,7 @@ import { UpdateSurfcampDto } from './dto/update-surfcamp.dto';
 import { Model } from 'mongoose';
 import { Surfcamp } from './entities/surfcamp.schema';
 import { extractToken } from '../helpers/extract-token';
+import { PhotoI } from 'src/interfaces/photos.interface';
 
 @Injectable()
 export class SurfcampsService {
@@ -25,11 +26,21 @@ export class SurfcampsService {
         const surfcampsDb = await this.surfcampModel
             .find({})
             .populate('packages', { surfcamp: 0 });
-        return surfcampsDb.filter(
-            (item) =>
-                item.location.includes(query.location) &&
-                item.rating >= Number(query.rating)
-        );
+        return surfcampsDb.filter((item) => {
+            return (
+                (query.location !== ''
+                    ? item.location.includes(query.location)
+                    : true) &&
+                (query.rating !== ''
+                    ? item.rating >= Number(query.rating)
+                    : true) &&
+                (query.skillLevels.length > 0
+                    ? item.skillLevels.some((element) =>
+                          query.skillLevels.includes(element)
+                      )
+                    : true)
+            );
+        });
     }
 
     findOne(id: string) {
@@ -55,14 +66,18 @@ export class SurfcampsService {
         return surfcampDb.packages;
     }
 
-    async addPhoto(id: string, newPhoto: { photoUrl: string }) {
+    async addPhoto(id: string, newPhoto: PhotoI) {
         const surfcampDb = await this.surfcampModel.findById(id);
-        if (surfcampDb.photos.includes(newPhoto.photoUrl)) {
+        if (
+            surfcampDb.photos.find(
+                (item) => item.photoUrl === newPhoto.photoUrl
+            )
+        ) {
             throw new ConflictException(
                 'This photo url already exists for this surfcamp'
             );
         }
-        surfcampDb.photos.push(newPhoto.photoUrl);
+        surfcampDb.photos.push(newPhoto);
         await surfcampDb.save();
         return surfcampDb;
     }
@@ -70,7 +85,7 @@ export class SurfcampsService {
     async deletePhoto(id: string, deletePhoto: { deletePhotoUrl: string }) {
         const surfcampDb = await this.surfcampModel.findById(id);
         surfcampDb.photos = surfcampDb.photos.filter(
-            (item) => item !== deletePhoto.deletePhotoUrl
+            (item) => item.photoUrl !== deletePhoto.deletePhotoUrl
         );
         await surfcampDb.save();
         return surfcampDb;
@@ -93,7 +108,24 @@ export class SurfcampsService {
             user: decodedToken.id,
         };
         surfcampDb.comments.push(payload);
+        surfcampDb.rating = 0;
+        surfcampDb.comments.forEach((comment) => {
+            surfcampDb.rating += comment.rating;
+        });
+        surfcampDb.rating = surfcampDb.rating / surfcampDb.comments.length;
         await surfcampDb.save();
-        return surfcampDb;
+        return surfcampDb.comments;
+    }
+
+    async getSurfcampCommentsById(id: string) {
+        const surfcampDb = await this.surfcampModel
+            .findById(id)
+            .populate('comments.user', {
+                name: 1,
+                lastName: 1,
+                profilePicUrl: 1,
+            });
+
+        return surfcampDb.comments;
     }
 }

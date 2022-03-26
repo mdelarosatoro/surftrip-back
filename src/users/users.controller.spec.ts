@@ -16,6 +16,7 @@ describe('UsersController', () => {
                         findOne: jest.fn(),
                         update: jest.fn(),
                         remove: jest.fn(),
+                        findAll: jest.fn(),
                     },
                 },
             ],
@@ -30,6 +31,13 @@ describe('UsersController', () => {
     });
 
     const id = 'fi10210id1s2idm12';
+
+    describe('When controller.findAll is called', () => {
+        it('It should call service.findAll', async () => {
+            await controller.findAll();
+            expect(service.findAll).toHaveBeenCalled();
+        });
+    });
 
     describe('When controller.findOne is called', () => {
         it('It should call service.findOne', () => {

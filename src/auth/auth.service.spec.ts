@@ -24,6 +24,15 @@ describe('UsersService', () => {
             name: 'test',
             lastName: 'test',
             role: 'user',
+            ProfilePicUrl: '',
+        };
+        const testUserLoginResponse = {
+            id: '',
+            profilePicUrl: '',
+            email: 'test@example.com',
+            name: 'test',
+            lastName: 'test',
+            role: 'user',
         };
         const testUserLogin = {
             username: 'test',
@@ -33,19 +42,26 @@ describe('UsersService', () => {
             email: 'test@example.com',
             username: 'test',
             password: 'test',
+            description: '',
             name: 'test',
             lastName: 'test',
             location: 'test',
             skillLevels: ['Beginner'],
         };
+        const testSurfcampLoginResponse = {
+            id: 'test',
+            name: 'test',
+            role: 'test',
+            username: 'test',
+        };
 
         const mockUserRepository = {
             create: jest.fn().mockResolvedValue(testUser),
-            findOne: jest.fn().mockResolvedValue(testUser),
+            findOne: jest.fn().mockResolvedValue(testUserLoginResponse),
         };
         const mockSurfcampRepository = {
             create: jest.fn().mockResolvedValue(testSurfcamp),
-            findOne: jest.fn().mockResolvedValue(testSurfcamp),
+            findOne: jest.fn().mockResolvedValue(testSurfcampLoginResponse),
         };
         beforeEach(async () => {
             bcrypt.compareSync.mockReturnValue(true);
@@ -80,7 +96,10 @@ describe('UsersService', () => {
 
         test('When calling loginUser it returns a token', async () => {
             const result = await service.loginUser({ ...testUserLogin });
-            expect(result).toEqual({ token: 'token' });
+            expect(result).toEqual({
+                ...testUserLoginResponse,
+                token: 'token',
+            });
         });
 
         test('When calling loginToken with a bad token it throws', async () => {
@@ -117,7 +136,10 @@ describe('UsersService', () => {
 
         test('When calling loginSurfcamp it returns a token', async () => {
             const result = await service.loginSurfcamp(testUserLogin);
-            expect(result).toEqual({ token: 'token' });
+            expect(result).toEqual({
+                ...testSurfcampLoginResponse,
+                token: 'token',
+            });
         });
 
         test('When calling loginTokenSurfcamp with a bad token it throws', async () => {

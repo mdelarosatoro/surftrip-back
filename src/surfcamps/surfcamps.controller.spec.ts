@@ -22,6 +22,7 @@ describe('SurfcampsController', () => {
                         addPhoto: jest.fn(),
                         deletePhoto: jest.fn(),
                         addComment: jest.fn(),
+                        getSurfcampCommentsById: jest.fn(),
                     },
                 },
             ],
@@ -43,7 +44,14 @@ describe('SurfcampsController', () => {
     });
     describe('When controller.searchSurfcamps is called', () => {
         it('It should call service.search', () => {
-            controller.searchSurfcamps();
+            controller.searchSurfcamps(
+                'true',
+                'true',
+                'true',
+                'true',
+                'true',
+                'true'
+            );
             expect(service.search).toHaveBeenCalled();
         });
     });
@@ -73,7 +81,10 @@ describe('SurfcampsController', () => {
     });
     describe('When controller.addPhoto is called', () => {
         it('It should call service.addPhoto', () => {
-            controller.addPhoto('fakeid', { photoUrl: 'testurl' });
+            controller.addPhoto('fakeid', {
+                photoUrl: 'testurl',
+                description: 'test',
+            });
             expect(service.addPhoto).toHaveBeenCalled();
         });
     });
@@ -90,6 +101,12 @@ describe('SurfcampsController', () => {
                 rating: '2',
             });
             expect(service.addComment).toHaveBeenCalled();
+        });
+    });
+    describe('When controller.getSurfcampCommentsById is called', () => {
+        it('It should call service.getSurfcampCommentsById', () => {
+            controller.getSurfcampCommentsById('testId');
+            expect(service.getSurfcampCommentsById).toHaveBeenCalled();
         });
     });
 });

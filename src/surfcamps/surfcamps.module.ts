@@ -24,6 +24,7 @@ export class SurfcampsModule {
                 { path: 'surfcamps', method: RequestMethod.POST },
                 { path: 'surfcamps/:id', method: RequestMethod.GET },
                 { path: 'surfcamps/:id/comments', method: RequestMethod.POST },
+                { path: 'surfcamps/:id/comments', method: RequestMethod.GET },
                 { path: 'surfcamps/:id/packages', method: RequestMethod.GET }
             )
             .forRoutes(SurfcampsController);

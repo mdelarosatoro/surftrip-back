@@ -40,10 +40,20 @@ export class AuthService {
                     id: possibleUserDb.id,
                     name: possibleUserDb.name,
                     lastName: possibleUserDb.lastName,
+                    email: possibleUserDb.email,
+                    profilePicUrl: possibleUserDb.profilePicUrl,
                     role: possibleUserDb.role,
                 };
                 const token = jwt.sign(payload, process.env.SECRET);
-                return { token };
+                return {
+                    token,
+                    id: possibleUserDb.id,
+                    name: possibleUserDb.name,
+                    lastName: possibleUserDb.lastName,
+                    email: possibleUserDb.email,
+                    profilePicUrl: possibleUserDb.profilePicUrl,
+                    role: possibleUserDb.role,
+                };
             } else {
                 throw new UnauthorizedException(
                     'Username or password incorrect'
@@ -89,7 +99,13 @@ export class AuthService {
                     role: possibleUserDb.role,
                 };
                 const token = jwt.sign(payload, process.env.SECRET);
-                return { token };
+                return {
+                    token,
+                    id: payload.id,
+                    name: payload.name,
+                    username: payload.username,
+                    role: payload.role,
+                };
             } else {
                 throw new UnauthorizedException(
                     'Username or password incorrect'

@@ -54,7 +54,16 @@ describe('PackagesController', () => {
     });
     describe('When controller.searchSurfcamps is called', () => {
         it('It should call service.searchSurfcamps', () => {
-            controller.searchPackages();
+            controller.searchPackages(
+                'test',
+                'test',
+                'test',
+                'test',
+                'true',
+                'true',
+                'true',
+                'true'
+            );
             expect(service.search).toHaveBeenCalled();
         });
     });

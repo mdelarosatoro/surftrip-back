@@ -46,6 +46,7 @@ describe('AuthController', () => {
                 password: 'test',
                 name: 'test',
                 lastName: 'test',
+                ProfilePicUrl: '',
             });
             expect(service.registerUser).toHaveBeenCalled();
         });
@@ -72,6 +73,7 @@ describe('AuthController', () => {
                 email: 'test@example.com',
                 username: 'test',
                 password: 'test',
+                description: 'test',
                 name: 'test',
                 lastName: 'test',
                 location: 'test',

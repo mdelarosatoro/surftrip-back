@@ -7,7 +7,6 @@ import { Package } from './entities/package.entity';
 import { Surfcamp } from '../surfcamps/entities/surfcamp.schema';
 import { extractToken } from '../helpers/extract-token';
 import { User } from 'src/users/entities/user.entity';
-
 @Injectable()
 export class PackagesService {
     constructor(
@@ -54,11 +53,26 @@ export class PackagesService {
                 customers: 0,
                 role: 0,
             });
-        return packagesDb.filter(
-            (item) =>
-                item.price <= Number(query.price) &&
-                item.days <= Number(query.days)
-        );
+        return packagesDb.filter((item) => {
+            const surfcamp = item.surfcamp as unknown as Surfcamp;
+            return (
+                (query.location !== ''
+                    ? surfcamp.location.includes(query.location)
+                    : true) &&
+                (query.rating !== ''
+                    ? surfcamp.rating >= Number(query.rating)
+                    : true) &&
+                (query.price !== ''
+                    ? item.price <= Number(query.price)
+                    : true) &&
+                (query.days !== '' ? item.days <= Number(query.days) : true) &&
+                (query.skillLevels.length > 0
+                    ? surfcamp.skillLevels.some((element) =>
+                          query.skillLevels.includes(element)
+                      )
+                    : true)
+            );
+        });
     }
 
     findOne(id: string) {
@@ -88,11 +102,15 @@ export class PackagesService {
             packageDb.surfcamp
         );
 
-        userDb.bookings.push(packageDb._id);
+        userDb.bookings.push({
+            package: packageDb._id as unknown as Package,
+            bookedAt: Date.now(),
+        });
         await userDb.save();
         const newBookObject = {
             user: tokenContents.id,
             package: id,
+            bookedAt: Date.now(),
         };
         surfcampDb.customers.push(newBookObject);
         await surfcampDb.save();
