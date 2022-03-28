@@ -28,4 +28,4 @@ export async function bootstrap() {
     });
     return { app, server };
 }
-bootstrap();
+// bootstrap();
