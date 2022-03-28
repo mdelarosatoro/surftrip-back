@@ -38,7 +38,7 @@ export class Surfcamp {
     @Prop({
         required: true,
     })
-    location: string;
+    location: number[];
 
     @Prop({
         // enum: ['Beginner', 'Intermediate', 'Advanced', 'Expert'],
