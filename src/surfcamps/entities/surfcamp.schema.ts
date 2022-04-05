@@ -8,6 +8,11 @@ export type SurfcampDocument = Surfcamp & Document;
 @Schema()
 export class Surfcamp {
     @Prop({
+        default: '',
+    })
+    stripeId: string;
+
+    @Prop({
         required: true,
         unique: true,
     })

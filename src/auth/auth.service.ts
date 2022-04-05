@@ -1,10 +1,15 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+    BadRequestException,
+    Injectable,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserI } from '../interfaces/user.interface';
 import { UserDto, UserLoginDto } from './dto/user.dto';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
+import Stripe from 'stripe';
 
 import { SurfcampDto, SurfcampLoginDto } from './dto/surfcamp.dto';
 import { Surfcamp } from '../surfcamps/entities/surfcamp.schema';
@@ -73,12 +78,41 @@ export class AuthService {
         return tokenContents;
     }
 
-    async registerSurfcamp(surfcampDto: SurfcampDto): Promise<Surfcamp> {
+    async registerSurfcamp(surfcampDto: SurfcampDto): Promise<any> {
         const encryptedPasswordSurfcamp = {
             ...surfcampDto,
             password: bcrypt.hashSync(surfcampDto.password),
         };
-        return await this.surfcampModel.create(encryptedPasswordSurfcamp);
+        const stripe = new Stripe(
+            'sk_test_51JUdtCGiuvhSIYzqnFSgtjsLVj5i7BZMZzc0C7j3dN0cppGKPleSLztGiiWEmM69EbOiLRdDp2XUndn3MuqhqTnp00XyALgDRz',
+            { apiVersion: '2020-08-27' }
+        );
+
+        const stripeAccount = await stripe.accounts.create({
+            type: 'express',
+            email: surfcampDto.email,
+            capabilities: {
+                card_payments: { requested: true },
+                transfers: { requested: true },
+            },
+        });
+
+        const accountLink = await stripe.accountLinks.create({
+            account: stripeAccount.id,
+            refresh_url: 'http://localhost:4200/login',
+            return_url: 'http://localhost:4200/login',
+            type: 'account_onboarding',
+        });
+
+        const newSurfcampDb = await this.surfcampModel.create(
+            encryptedPasswordSurfcamp
+        );
+
+        if (newSurfcampDb) {
+            return accountLink;
+        } else {
+            throw new BadRequestException();
+        }
     }
 
     async loginSurfcamp(surfcampLoginDto: SurfcampLoginDto): Promise<any> {
