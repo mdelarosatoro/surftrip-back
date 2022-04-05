@@ -6,6 +6,16 @@ export type PackageDocument = Package & Document;
 @Schema()
 export class Package {
     @Prop({
+        default: '',
+    })
+    stripeProductId: string;
+
+    @Prop({
+        default: '',
+    })
+    stripePriceId: string;
+
+    @Prop({
         required: true,
     })
     name: string;

@@ -6,6 +6,7 @@ import { Model } from 'mongoose';
 import { Package } from './entities/package.entity';
 import { Surfcamp } from '../surfcamps/entities/surfcamp.schema';
 import { extractToken } from '../helpers/extract-token';
+import Stripe from 'stripe';
 import { User } from 'src/users/entities/user.entity';
 @Injectable()
 export class PackagesService {
@@ -24,14 +25,33 @@ export class PackagesService {
         if (extractedToken.role !== 'surfcamp') {
             throw new UnauthorizedException('User is not a surfcamp');
         }
+
+        const stripe = new Stripe(
+            'sk_test_51JUdtCGiuvhSIYzqnFSgtjsLVj5i7BZMZzc0C7j3dN0cppGKPleSLztGiiWEmM69EbOiLRdDp2XUndn3MuqhqTnp00XyALgDRz',
+            { apiVersion: '2020-08-27' }
+        );
+        const stripeProduct = await stripe.products.create({
+            name: createPackageDto.name,
+            description: createPackageDto.description,
+            images: [createPackageDto.icon],
+        });
+        const stripePrice = await stripe.prices.create({
+            unit_amount: createPackageDto.price * 100,
+            currency: 'eur',
+            product: stripeProduct.id,
+        });
+
         const newPackage = {
             ...createPackageDto,
+            stripeProductId: stripeProduct.id,
+            stripePriceId: stripePrice.id,
             surfcamp: extractedToken.id,
         };
         const surfcampDb = await this.surfcampModel.findById(extractedToken.id);
         const newPackageDb = await this.packageModel.create(newPackage);
         surfcampDb.packages.push(newPackageDb._id);
         await surfcampDb.save();
+
         return newPackageDb;
     }
 
@@ -114,8 +134,31 @@ export class PackagesService {
         };
         surfcampDb.customers.push(newBookObject);
         await surfcampDb.save();
-        return {
-            message: `User ${userDb._id} successfully booked package ${packageDb._id}`,
-        };
+
+        const stripe = new Stripe(
+            'sk_test_51JUdtCGiuvhSIYzqnFSgtjsLVj5i7BZMZzc0C7j3dN0cppGKPleSLztGiiWEmM69EbOiLRdDp2XUndn3MuqhqTnp00XyALgDRz',
+            { apiVersion: '2020-08-27' }
+        );
+
+        const session = await stripe.checkout.sessions.create({
+            line_items: [
+                {
+                    price: packageDb.stripePriceId,
+                    quantity: 1,
+                },
+            ],
+            mode: 'payment',
+            success_url: `http://localhost:4200/surfcamp-packages/${packageDb.surfcamp}`,
+            cancel_url: 'https://example.com/failure',
+            payment_intent_data: {
+                application_fee_amount:
+                    Math.floor(packageDb.price * 0.15) * 100,
+                transfer_data: {
+                    destination: surfcampDb.stripeId,
+                },
+            },
+        });
+
+        return session;
     }
 }

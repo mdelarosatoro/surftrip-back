@@ -40,7 +40,8 @@ export class User {
     role: string;
 
     @Prop({
-        default: '',
+        default:
+            'https://firebasestorage.googleapis.com/v0/b/surftrip-18659.appspot.com/o/default%20profile.jpeg?alt=media&token=4db234c6-42c7-4e73-b834-c2d626f77361',
     })
     profilePicUrl: string;
 
