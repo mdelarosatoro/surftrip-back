@@ -104,9 +104,10 @@ export class AuthService {
             type: 'account_onboarding',
         });
 
-        const newSurfcampDb = await this.surfcampModel.create(
-            encryptedPasswordSurfcamp
-        );
+        const newSurfcampDb = await this.surfcampModel.create({
+            ...encryptedPasswordSurfcamp,
+            stripeId: stripeAccount.id,
+        });
 
         if (newSurfcampDb) {
             return accountLink;
